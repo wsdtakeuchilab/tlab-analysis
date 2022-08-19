@@ -1,0 +1,45 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - reopend
+      - synchronize
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.10"
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Poetry
+        run: pipx install poetry==1.2.0b3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: poetry
+      - name: Install Poetry plugins
+        run: poetry self install
+      - name: Install dependencies
+        run: poetry install
+      - name: Lint
+        run: |
+          poetry run flake8 .
+          poetry run black --check .
+          poetry run isort --check-only .
+      - name: Test
+        run: |
+          poetry run mypy .
+          poetry run pytest --doctest-modules src
+          poetry run pytest --cov-report=xml
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
