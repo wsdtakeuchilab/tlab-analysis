@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "tlab-analysis"
+version = "0.0.0"  # dummy version. The actual version is __version__ in __init__.py
+description = "A data analysis package for Takeuchi Lab"
+license = "MIT"
+authors = ["Shuhei Nitta <huisintheta@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/Waseda-TakeuchiLab/tlab-analysis"
+repository = "https://github.com/Waseda-TakeuchiLab/tlab-analysis"
+
+[tool.poetry.dependencies]
+python = "~3.10"
+pandas = "^1.4.3"
+scipy = "^1.9.0"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.971"
+flake8 = "^5.0.4"
+isort = "^5.10.1"
+black = "^22.6.0"
+pre-commit = "^2.20.0"
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+pytest-describe = "^2.0.1"
+pandas-stubs = "^1.4.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+folders = [
+  { path = "src" }
+]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+
+[[tool.mypy.overrides]]
+module = [
+    "numpy.*",
+    "scipy.*",
+]
+ignore_missing_imports = true
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=tlab_analysis --cov-report=term-missing:skip-covered"
+testpaths = ["tests"]
