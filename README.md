@@ -1,14 +1,15 @@
-# A Data Analysis Package for Takeuchi Lab  <!-- omit in toc -->
+# A Data Analysis Package for Takeuchi Lab <!-- omit in toc -->
+
 <p align="center">
-<a href="https://github.com/Waseda-TakeuchiLab/tlab-analysis/actions?query=workflow%3ATest" target="_blank">
-    <img src="https://github.com/Waseda-TakeuchiLab/tlab-analysis/workflows/Test/badge.svg" alt="Test">
+<a href="https://github.com/wasedatakeuchilab/tlab-analysis/actions?query=workflow%3ATest" target="_blank">
+    <img src="https://github.com/wasedatakeuchilab/tlab-analysis/workflows/Test/badge.svg" alt="Test">
 </a>
-<a href="https://codecov.io/gh/Waseda-TakeuchiLab/tlab-analysis" target="_blank">
-    <img src="https://img.shields.io/codecov/c/github/Waseda-TakeuchiLab/tlab-analysis?color=%2334D058" alt="Coverage">
+<a href="https://codecov.io/gh/wasedatakeuchilab/tlab-analysis" target="_blank">
+    <img src="https://img.shields.io/codecov/c/github/wasedatakeuchilab/tlab-analysis?color=%2334D058" alt="Coverage">
 </a>
 </p>
 
-***tlab-analysis*** is a Python package for data analysis in Takeuchi laboratory.
+**_tlab-analysis_** is a Python package for data analysis in Takeuchi laboratory.
 
 - [Installation](#installation)
 - [Getting Started](#getting-started)
@@ -19,18 +20,18 @@
     - [V-Figure](#v-figure)
 - [License](#license)
 
-
 ## Installation
-```sh
-$ pip install git+https://github.com/Waseda-TakeuchiLab/tlab-analysis
-```
 
+```sh
+$ pip install git+https://github.com/wasedatakeuchilab/tlab-analysis
+```
 
 ## Getting Started
 
 ### Photo Luminescence Experiments
 
 #### Load Data
+
 ```python
 import tlab_analysis.photo_luminescence as pl
 
@@ -44,15 +45,18 @@ with open(filename, "rb") as f:
 ```
 
 #### Show Streak Image
+
 ```python
 import plotly.express as px
 
 fig = px.imshow(data.streak_image)
 fig.show()
 ```
+
 ![streak image](./resources/images/photo_luminescence/streak_image.svg)
 
 You can also see it as a 3D surface plot.
+
 ```python
 import plotly.graph_objects as go
 
@@ -65,16 +69,18 @@ fig = go.Figure(
 )
 fig.show()
 ```
+
 ![streak image 3D surface](./resources/images/photo_luminescence/streak_image_3D.svg)
 
-
 #### H-Figure
+
 ```python
 tr = data.resolve_along_time()
 fig = px.line(tr.df, x="wavelength", y="intensity")
 fig.add_vline(tr.peak_wavelength)
 fig.show()
 ```
+
 ![h-figure](./resources/images/photo_luminescence/h-figure.svg)
 
 Get its properties.
@@ -85,8 +91,8 @@ peak_intensity = tr.peak_intensity
 FWHM = tr.FWHM
 ```
 
-
 #### V-Figure
+
 ```python
 wr = data.resolve_along_wavelength(
     wavelength_range=(470, 500)
@@ -94,10 +100,11 @@ wr = data.resolve_along_wavelength(
 fig = px.line(wr.df, x="time", y="intensity")
 fig.show()
 ```
+
 ![v-figure](./resources/images/photo_luminescence/v-figure.svg)
 
-
 Fit double exponential function to estimate relaxation times.
+
 ```python
 import numpy as np
 
@@ -108,10 +115,11 @@ params, cov = wr.fit(double_exponential)
 fig = px.line(wr.df, x="time", y=["intensity", "fit"])
 fig.show()
 ```
+
 ![fitting curve](./resources/images/photo_luminescence/fit.svg)
 
-
 ## License
+
 [MIT License](./LICENSE)
 
 Copyright (c) 2022 Shuhei Nitta
