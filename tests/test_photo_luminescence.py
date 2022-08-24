@@ -199,7 +199,8 @@ def describe_time_resolved() -> None:
                 return min, half
             case "out_of_range":
                 return min - half / 2, half / 2
-        raise NotImplementedError  # pragma: no cover
+            case _:
+                raise NotImplementedError
 
     @pytest.fixture()
     def tr(data: pl.Data, time_range: tuple[float, float]) -> pl.TimeResolved:
@@ -266,7 +267,8 @@ def describe_wavelength_resolved() -> None:
                 return min, half
             case "out_of_range":
                 return min - half / 2, half / 2
-        raise NotImplementedError  # pragma: no cover
+            case _:
+                raise NotImplementedError
 
     @pytest.fixture()
     def time_offset() -> float:

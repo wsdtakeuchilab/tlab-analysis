@@ -17,4 +17,4 @@ def filepath(
         case "Path":
             return pathlib.Path(tmpdir) / filename
         case _:
-            raise NotImplementedError  # pragma: no cover
+            raise NotImplementedError

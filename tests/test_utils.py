@@ -17,7 +17,8 @@ def invalid_xdata_and_ydata(
             return [0.0], [0.0, 0.0]
         case "empty":
             return [], []
-    raise NotImplementedError  # pragma: no cover
+        case _:
+            raise NotImplementedError
 
 
 @pytest.mark.parametrize("x0", [0.1, 0.2])
