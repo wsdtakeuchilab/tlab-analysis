@@ -1,5 +1,4 @@
 import io
-import os
 import typing as t
 from unittest import mock
 
@@ -93,8 +92,7 @@ def raw(
 
 
 @pytest.fixture()
-def write_raw(filepath: typing.FilePath, raw: bytes, tmpdir: str) -> None:
-    os.chdir(tmpdir)
+def write_raw(filepath: typing.FilePath, raw: bytes) -> None:
     with open(filepath, "wb") as f:
         f.write(raw)
 
