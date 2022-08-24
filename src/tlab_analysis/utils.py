@@ -42,7 +42,7 @@ def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
 
     See Also
     --------
-    https://github.com/Waseda-TakeuchiLab/tlab-analysis/blob/master/resources/images/utils/find_scdc.svg
+    https://github.com/wasedatakeuchilab/tlab-analysis/blob/master/resources/images/utils/find_scdc.svg
     """
     if not len(xdata) == len(ydata) != 0:
         raise ValueError(
@@ -102,7 +102,7 @@ def determine_fit_range_dc(
 
     See Also
     --------
-    https://github.com/Waseda-TakeuchiLab/tlab-analysis/blob/master/resources/images/utils/determine_fit_range_dc.svg
+    https://github.com/wasedatakeuchilab/tlab-analysis/blob/master/resources/images/utils/determine_fit_range_dc.svg
     """
     if not len(xdata) == len(ydata) != 0:
         raise ValueError(

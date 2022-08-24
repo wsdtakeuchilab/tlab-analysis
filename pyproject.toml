@@ -5,8 +5,8 @@ description = "A data analysis package for Takeuchi Lab"
 license = "MIT"
 authors = ["Shuhei Nitta <huisintheta@gmail.com>"]
 readme = "README.md"
-homepage = "https://github.com/Waseda-TakeuchiLab/tlab-analysis"
-repository = "https://github.com/Waseda-TakeuchiLab/tlab-analysis"
+homepage = "https://github.com/wasedatakeuchilab/tlab-analysis"
+repository = "https://github.com/wasedatakeuchilab/tlab-analysis"
 
 [tool.poetry.dependencies]
 python = "~3.10"
