@@ -163,9 +163,9 @@ def describe_data() -> None:
 
     @pytest.mark.parametrize("time_offset", ["auto", 1.0])
     def test_resolve_along_wavelength_time_offset(
+        find_scdc_mock: mock.Mock,
         data: pl.Data,
         time_offset: t.Literal["auto"] | float,
-        find_scdc_mock: mock.Mock,
     ) -> None:
         wr = data.resolve_along_wavelength(time_offset=time_offset)
         if time_offset == "auto":
@@ -174,9 +174,9 @@ def describe_data() -> None:
 
     @pytest.mark.parametrize("intensity_offset", ["auto", 1.0])
     def test_resolve_along_wavelength_intensity_offset(
+        find_scdc_mock: mock.Mock,
         data: pl.Data,
         intensity_offset: t.Literal["auto"] | float,
-        find_scdc_mock: mock.Mock,
     ) -> None:
         wr = data.resolve_along_wavelength(intensity_offset=intensity_offset)
         if intensity_offset == "auto":
