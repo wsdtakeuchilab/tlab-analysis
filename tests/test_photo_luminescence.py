@@ -99,7 +99,7 @@ def write_raw(filepath: typing.FilePath, raw: bytes, tmpdir: str) -> None:
         f.write(raw)
 
 
-@pytest.mark.parametrize("filepathstr", ["photo_luminescence_testcase.img"])
+@pytest.mark.parametrize("filename", ["photo_luminescence_testcase.img"])
 @pytest.mark.usefixtures(write_raw.__name__)
 def test_read_img(data: pl.Data, filepath: typing.FilePath) -> None:
     assert pl.read_img(filepath) == data
