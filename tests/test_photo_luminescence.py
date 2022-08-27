@@ -1,5 +1,4 @@
 import io
-import os
 import typing as t
 from unittest import mock
 
@@ -93,13 +92,12 @@ def raw(
 
 
 @pytest.fixture()
-def write_raw(filepath: typing.FilePath, raw: bytes, tmpdir: str) -> None:
-    os.chdir(tmpdir)
+def write_raw(filepath: typing.FilePath, raw: bytes) -> None:
     with open(filepath, "wb") as f:
         f.write(raw)
 
 
-@pytest.mark.parametrize("filepathstr", ["photo_luminescence_testcase.img"])
+@pytest.mark.parametrize("filename", ["photo_luminescence_testcase.img"])
 @pytest.mark.usefixtures(write_raw.__name__)
 def test_read_img(data: pl.Data, filepath: typing.FilePath) -> None:
     assert pl.read_img(filepath) == data
@@ -165,9 +163,9 @@ def describe_data() -> None:
 
     @pytest.mark.parametrize("time_offset", ["auto", 1.0])
     def test_resolve_along_wavelength_time_offset(
+        find_scdc_mock: mock.Mock,
         data: pl.Data,
         time_offset: t.Literal["auto"] | float,
-        find_scdc_mock: mock.Mock,
     ) -> None:
         wr = data.resolve_along_wavelength(time_offset=time_offset)
         if time_offset == "auto":
@@ -176,9 +174,9 @@ def describe_data() -> None:
 
     @pytest.mark.parametrize("intensity_offset", ["auto", 1.0])
     def test_resolve_along_wavelength_intensity_offset(
+        find_scdc_mock: mock.Mock,
         data: pl.Data,
         intensity_offset: t.Literal["auto"] | float,
-        find_scdc_mock: mock.Mock,
     ) -> None:
         wr = data.resolve_along_wavelength(intensity_offset=intensity_offset)
         if intensity_offset == "auto":
@@ -201,7 +199,8 @@ def describe_time_resolved() -> None:
                 return min, half
             case "out_of_range":
                 return min - half / 2, half / 2
-        raise NotImplementedError  # pragma: no cover
+            case _:
+                raise NotImplementedError
 
     @pytest.fixture()
     def tr(data: pl.Data, time_range: tuple[float, float]) -> pl.TimeResolved:
@@ -268,7 +267,8 @@ def describe_wavelength_resolved() -> None:
                 return min, half
             case "out_of_range":
                 return min - half / 2, half / 2
-        raise NotImplementedError  # pragma: no cover
+            case _:
+                raise NotImplementedError
 
     @pytest.fixture()
     def time_offset() -> float:
