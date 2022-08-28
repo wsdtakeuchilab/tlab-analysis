@@ -17,6 +17,8 @@ categories:
     labels:
       - chore
       - internal
+      - refactor
+      - dependencies
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: \<*_&
 version-resolver:
