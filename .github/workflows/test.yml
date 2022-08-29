@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Poetry
-        run: pipx install poetry==1.2.0b3
+        run: pipx install poetry==1.2.0rc2
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -36,9 +36,10 @@ jobs:
           poetry run flake8 .
           poetry run black --check .
           poetry run isort --check-only .
+      - name: Check types
+        run: poetry run mypy .
       - name: Test
         run: |
-          poetry run mypy .
           poetry run pytest --doctest-modules src
           poetry run pytest --cov-report=xml
       - name: Upload coverage
