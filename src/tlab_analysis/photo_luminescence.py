@@ -370,7 +370,9 @@ class TimeResolved:
             A Series object of the smoothed intensity.
         """
         assert "intensity" in self.df.columns
-        return self.df.rolling(window, center=True).mean()["intensity"]
+        intensity = self.df["intensity"].rolling(window, center=True).mean()
+        assert isinstance(intensity, pd.Series)
+        return intensity
 
 
 @dataclasses.dataclass(frozen=True)
