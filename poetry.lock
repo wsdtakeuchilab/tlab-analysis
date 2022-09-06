@@ -222,7 +222,7 @@ test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 
 [[package]]
 name = "pandas-stubs"
-version = "1.4.3.220829"
+version = "1.4.4.220905"
 description = "Type annotations for pandas"
 category = "dev"
 optional = false
@@ -230,6 +230,7 @@ python-versions = ">=3.8,<3.11"
 
 [package.dependencies]
 types-pytz = ">=2022.1.1"
+types_SQLAlchemy = ">=1.4.50"
 
 [[package]]
 name = "pathspec"
@@ -444,6 +445,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "types-SQLAlchemy"
+version = "1.4.50"
+description = "Typing stubs for SQLAlchemy"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "typing-extensions"
 version = "4.3.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -471,7 +480,7 @@ testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.10"
-content-hash = "a25da1f3b927afef466edf225052102ad63a62c197a1d928e8237367cadba715"
+content-hash = "df10faa83a21bb47f6606ea5b5f1a917024ff84a0a6418a00ada4bd190a22bc3"
 
 [metadata.files]
 attrs = [
@@ -686,8 +695,8 @@ pandas = [
     {file = "pandas-1.4.4.tar.gz", hash = "sha256:ab6c0d738617b675183e5f28db32b5148b694ad9bba0a40c3ea26d96b431db67"},
 ]
 pandas-stubs = [
-    {file = "pandas-stubs-1.4.3.220829.tar.gz", hash = "sha256:f49f74f496e1b10c42218799067c23603c37e6e1cc55ca24f6ea23c46d0119f9"},
-    {file = "pandas_stubs-1.4.3.220829-py3-none-any.whl", hash = "sha256:7a1262c20c747515e2ed15a6cefce292ddce23c140828dfdcbcf97f1f3e4bd03"},
+    {file = "pandas-stubs-1.4.4.220905.tar.gz", hash = "sha256:4b1cf2e887d5321363b04bd61371795f1c73c406749aea405d46d0bcb38b9213"},
+    {file = "pandas_stubs-1.4.4.220905-py3-none-any.whl", hash = "sha256:797345b3536361e6b1b09f845e281e38f4a90f07e660a51c3ec8b1df22fb424a"},
 ]
 pathspec = [
     {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
@@ -820,6 +829,10 @@ tomli = [
 types-pytz = [
     {file = "types-pytz-2022.1.2.tar.gz", hash = "sha256:1a8b25c225c5e6bd8468aa9eb45ddd3b337f6716d4072ad0aa4ef1e41478eebc"},
     {file = "types_pytz-2022.1.2-py3-none-any.whl", hash = "sha256:8aa9fd2af9dee5f5bd7221c6804c9addeafa7ebc0008f544d4ace02b066818a4"},
+]
+types-SQLAlchemy = [
+    {file = "types-SQLAlchemy-1.4.50.tar.gz", hash = "sha256:a10b4b4daab424cd2492ef59ef15b01cb56bd5b43e27a7294030012d7a13586d"},
+    {file = "types_SQLAlchemy-1.4.50-py3-none-any.whl", hash = "sha256:c4074c21d19ebe01e60d3abaf632a5902b98f198e6a8db4f4fe6047b035529a7"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.3.0-py3-none-any.whl", hash = "sha256:25642c956049920a5aa49edcdd6ab1e06d7e5d467fc00e0506c44ac86fbfca02"},
