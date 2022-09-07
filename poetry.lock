@@ -222,7 +222,7 @@ test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 
 [[package]]
 name = "pandas-stubs"
-version = "1.4.3.220829"
+version = "1.4.4.220906"
 description = "Type annotations for pandas"
 category = "dev"
 optional = false
@@ -471,7 +471,7 @@ testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.10"
-content-hash = "a25da1f3b927afef466edf225052102ad63a62c197a1d928e8237367cadba715"
+content-hash = "df10faa83a21bb47f6606ea5b5f1a917024ff84a0a6418a00ada4bd190a22bc3"
 
 [metadata.files]
 attrs = [
@@ -686,8 +686,8 @@ pandas = [
     {file = "pandas-1.4.4.tar.gz", hash = "sha256:ab6c0d738617b675183e5f28db32b5148b694ad9bba0a40c3ea26d96b431db67"},
 ]
 pandas-stubs = [
-    {file = "pandas-stubs-1.4.3.220829.tar.gz", hash = "sha256:f49f74f496e1b10c42218799067c23603c37e6e1cc55ca24f6ea23c46d0119f9"},
-    {file = "pandas_stubs-1.4.3.220829-py3-none-any.whl", hash = "sha256:7a1262c20c747515e2ed15a6cefce292ddce23c140828dfdcbcf97f1f3e4bd03"},
+    {file = "pandas-stubs-1.4.4.220906.tar.gz", hash = "sha256:05b6709b8edf721858ebc7523ff5e8c7b4dcb9774bf91b0e03abb64a6b4e330b"},
+    {file = "pandas_stubs-1.4.4.220906-py3-none-any.whl", hash = "sha256:514d801d30141be6af42bc2553c69cc7fb30ebf5e623ebfcc28589635275a448"},
 ]
 pathspec = [
     {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
