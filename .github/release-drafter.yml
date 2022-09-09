@@ -49,10 +49,10 @@ autolabeler:
       - /^chore[/-].+/
   - label: refactor
     branch:
-      - /ref(actor)[/-].+/
+      - /ref(actor)?[/-].+/
   - label: documentation
     branch:
-      - /doc(umentation)[/-].+/
+      - /doc(umentation)?[/-].+/
   - label: enhancement
     branch:
-      - /enh(ancement)[/-].+/
+      - /enh(ancement)?[/-].+/
