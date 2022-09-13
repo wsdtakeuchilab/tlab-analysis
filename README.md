@@ -14,10 +14,10 @@
 - [Installation](#installation)
 - [Getting Started](#getting-started)
   - [Photo Luminescence Experiments](#photo-luminescence-experiments)
-    - [Load Data](#load-data)
-    - [Show Streak Image](#show-streak-image)
-    - [H-Figure](#h-figure)
-    - [V-Figure](#v-figure)
+    - [Load data](#load-data)
+    - [Show streak image](#show-streak-image)
+    - [H-figure](#h-figure)
+    - [V-figure](#v-figure)
 - [License](#license)
 
 ## Installation
@@ -30,7 +30,7 @@ $ pip install git+https://github.com/wasedatakeuchilab/tlab-analysis
 
 ### Photo Luminescence Experiments
 
-#### Load Data
+#### Load data
 
 ```python
 import tlab_analysis.photo_luminescence as pl
@@ -44,7 +44,7 @@ with open(filename, "rb") as f:
     data = pl.read_img(f)
 ```
 
-#### Show Streak Image
+#### Show streak image
 
 ```python
 import plotly.express as px
@@ -72,7 +72,7 @@ fig.show()
 
 ![streak image 3D surface](./resources/images/photo_luminescence/streak_image_3D.svg)
 
-#### H-Figure
+#### H-figure
 
 ```python
 tr = data.resolve_along_time()
@@ -91,7 +91,7 @@ peak_intensity = tr.peak_intensity
 FWHM = tr.FWHM
 ```
 
-#### V-Figure
+#### V-figure
 
 ```python
 wr = data.resolve_along_wavelength(
@@ -103,7 +103,7 @@ fig.show()
 
 ![v-figure](./resources/images/photo_luminescence/v-figure.svg)
 
-Fit double exponential function to estimate relaxation times.
+Fit a double exponential function to the data to estimate its relaxation times.
 
 ```python
 import numpy as np
