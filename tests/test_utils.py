@@ -1,4 +1,4 @@
-import typing as t
+from collections import abc
 
 import numpy as np
 import pytest
@@ -11,7 +11,7 @@ from tlab_analysis import utils
 @pytest.fixture(params=["length_not_equal", "empty"])
 def invalid_xdata_and_ydata(
     request: FixtureRequest[str],
-) -> tuple[t.Sequence[float], t.Sequence[float]]:
+) -> tuple[abc.Sequence[float], abc.Sequence[float]]:
     match request.param:
         case "length_not_equal":
             return [0.0], [0.0, 0.0]
@@ -39,7 +39,7 @@ def test_find_scdc(x0: float, y0: float, tau: float, seed: int) -> None:
 
 
 def test_find_scdc_ValueError(
-    invalid_xdata_and_ydata: tuple[t.Sequence[float], t.Sequence[float]]
+    invalid_xdata_and_ydata: tuple[abc.Sequence[float], abc.Sequence[float]]
 ) -> None:
     xdata, ydata = invalid_xdata_and_ydata
     with pytest.raises(ValueError):
@@ -67,7 +67,7 @@ def test_determine_fit_range_dc(x0: float, tau: float, seed: int) -> None:
 
 
 def test_determine_fit_range_dc_ValueError(
-    invalid_xdata_and_ydata: tuple[t.Sequence[float], t.Sequence[float]]
+    invalid_xdata_and_ydata: tuple[abc.Sequence[float], abc.Sequence[float]]
 ) -> None:
     xdata, ydata = invalid_xdata_and_ydata
     with pytest.raises(ValueError):

@@ -1,11 +1,11 @@
-import typing as t
+from collections import abc
 
 import pandas as pd
 
 
 def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
-    xdata: t.Sequence[float | int],
-    ydata: t.Sequence[float | int],
+    xdata: abc.Sequence[float | int],
+    ydata: abc.Sequence[float | int],
     _window: int = 10,
     _k: int = 2,
 ) -> tuple[float, float]:
@@ -67,8 +67,8 @@ def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
 
 
 def determine_fit_range_dc(
-    xdata: t.Sequence[float | int],
-    ydata: t.Sequence[float | int],
+    xdata: abc.Sequence[float | int],
+    ydata: abc.Sequence[float | int],
     _alpha: float = 0.10,
 ) -> tuple[float, float]:
     """
