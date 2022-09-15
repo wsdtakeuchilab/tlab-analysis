@@ -1,5 +1,6 @@
 import io
 import typing as t
+from collections import abc
 from unittest import mock
 
 import numpy as np
@@ -146,7 +147,7 @@ def describe_data() -> None:
         assert wr.data == data
 
     @pytest.fixture()
-    def find_scdc_mock() -> t.Generator[mock.Mock, None, None]:
+    def find_scdc_mock() -> abc.Generator[mock.Mock, None, None]:
         with mock.patch("tlab_analysis.utils.find_scdc", return_value=(1.0, 1.0)) as m:
             yield m
 

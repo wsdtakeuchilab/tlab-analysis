@@ -5,6 +5,7 @@ import functools
 import io
 import os
 import typing as t
+from collections import abc
 
 import numpy as np
 import numpy.typing as npt
@@ -457,7 +458,7 @@ class WavelengthResolved:
 
     def fit(
         self,
-        func: t.Callable[[t.Any], t.Any],
+        func: abc.Callable[[t.Any], t.Any],
         fitting_range: tuple[float, float] | None = None,
         **kwargs: t.Any,
     ) -> tuple[t.Any, t.Any]:  # pragma: no cover
