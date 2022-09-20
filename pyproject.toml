@@ -10,7 +10,7 @@ repository = "https://github.com/wasedatakeuchilab/tlab-analysis"
 
 [tool.poetry.dependencies]
 python = "~3.10"
-pandas = "^1.4.4"
+pandas = "^1.5.0"
 scipy = "^1.9.1"
 
 [tool.poetry.group.dev.dependencies]
