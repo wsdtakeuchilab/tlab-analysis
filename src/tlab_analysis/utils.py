@@ -10,7 +10,7 @@ def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
     _k: int = 2,
 ) -> tuple[float, float]:
     """
-    Find the start coordinates of a decay curve.
+    Finds the start coordinates of a decay curve.
 
     Parameters
     ----------
@@ -72,7 +72,7 @@ def determine_fit_range_dc(
     _alpha: float = 0.10,
 ) -> tuple[float, float]:
     """
-    Determine a range of x axis for fitting to a decay curve.
+    Determines a range of x axis for fitting to a decay curve.
 
     Parameters
     ----------
