@@ -1,7 +1,8 @@
 #! /usr/bin/env bash
 
-set -e
+set -euC
+set -o pipefail
 set -x
 
-pytest --doctest-modules src
-pytest --cov-report=term-missing:skip-covered ${@}
+# pytest --doctest-modules src  # Uncomment when to run doctests
+pytest --cov-report=term-missing:skip-covered "${@}"

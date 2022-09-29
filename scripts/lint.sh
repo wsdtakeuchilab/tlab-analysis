@@ -1,11 +1,12 @@
 #! /usr/bin/env bash
 
-set -e
+set -euC
+set -o pipefail
 set -x
 
-FILES_TO_CHECK="src tests"
+FILES_TO_FORMAT=("src" "tests")
 
-flake8 $FILES_TO_CHECK
-black $FILES_TO_CHECK --check
-isort $FILES_TO_CHECK --check-only
-mypy $FILES_TO_CHECK
+flake8 "${FILES_TO_FORMAT[@]}"
+black --check "${FILES_TO_FORMAT[@]}"
+isort --check-only "${FILES_TO_FORMAT[@]}"
+mypy "${FILES_TO_FORMAT[@]}"

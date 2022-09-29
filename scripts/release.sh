@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
-set -e
+set -euC
+set -o pipefail
 set -x
 
 VERSION=$(hatch version)
