@@ -1,8 +1,10 @@
 #! /usr/bin/env bash
 
-set -e
+set -euC
+set -o pipefail
 set -x
 
-FILES_TO_FORMAT="src tests scripts"
-black $FILES_TO_FORMAT
-isort $FILES_TO_FORMAT
+FILES_TO_FORMAT=("src" "tests" "scripts")
+
+black "${FILES_TO_FORMAT[@]}"
+isort "${FILES_TO_FORMAT[@]}"
