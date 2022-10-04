@@ -44,9 +44,13 @@ autolabeler:
   - label: bug
     branch:
       - /^fix[/-].+/
+      - /^bug[/-].+/
+      - /^bugfix[/-].+/
   - label: chore
     branch:
       - /^chore[/-].+/
+      - /^internal[/-].+/
+      - /pre-commit-ci-update-config/
   - label: refactor
     branch:
       - /ref(actor)?[/-].+/
