@@ -1,4 +1,4 @@
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 
 from .abstract import AbstractData as AbstractData
 from .utils import determine_fit_range_dc as determine_fit_range_dc
