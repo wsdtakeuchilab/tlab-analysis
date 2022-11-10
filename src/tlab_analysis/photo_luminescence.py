@@ -5,6 +5,7 @@ import functools
 import io
 import os
 import typing as t
+import warnings
 from collections import abc
 
 import numpy as np
@@ -13,6 +14,12 @@ import pandas as pd
 from scipy import optimize
 
 from tlab_analysis import abstract, typing, utils
+
+warnings.warn(
+    f"{__name__} is deprecated and will be removed after version 0.3.0. "
+    f"Use {__name__.replace('photo_luminescence', 'trpl')} instead.",
+    stacklevel=2,
+)
 
 DEFAULT_HEADER = bytes.fromhex(
     "49 4d cd 01 80 02 e0 01 00 00 00 00 02 00 00 00"
