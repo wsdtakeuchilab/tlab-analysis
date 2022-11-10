@@ -1,3 +1,4 @@
+---
 name-template: v$RESOLVED_VERSION
 tag-template: v$RESOLVED_VERSION
 categories:
@@ -19,7 +20,7 @@ categories:
       - internal
       - refactor
       - dependencies
-change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: \<*_&
 version-resolver:
   major:

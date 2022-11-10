@@ -1,3 +1,4 @@
+---
 name: Test
 
 on:
@@ -16,7 +17,7 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.10"
+          - '3.10'
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -28,7 +29,12 @@ jobs:
         id: cache
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test
+          key: >
+            ${{ runner.os }}-
+            python-
+            ${{ env.pythonLocation }}-
+            ${{ hashFiles('pyproject.toml') }}-
+            test
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install -e .[test]
