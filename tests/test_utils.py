@@ -1,6 +1,7 @@
 from collections import abc
 
 import numpy as np
+import pandas as pd
 import pytest
 from scipy import optimize
 
@@ -19,6 +20,63 @@ def invalid_xdata_and_ydata(
             return [], []
         case _:
             raise NotImplementedError
+
+
+def test_validate_xdata_and_ydata_invalid(
+    invalid_xdata_and_ydata: tuple[abc.Sequence[float], abc.Sequence[float]]
+) -> None:
+    xdata, ydata = invalid_xdata_and_ydata
+    with pytest.raises(ValueError):
+        utils.validate_xdata_and_ydata(xdata, ydata)
+
+
+@pytest.mark.parametrize("window", [3, 5, 7])
+def test_smooth(window: int) -> None:
+    x = list(range(100))
+    smoothed = utils.smooth(x, window)
+    assert (
+        smoothed
+        == pd.Series(x).rolling(window, center=True, min_periods=1).mean().to_list()
+    )
+
+
+@pytest.mark.parametrize("mu", [-0.5, 0.1, 0.5])
+@pytest.mark.parametrize("y_max", [1.0, 3.0, 5.0])
+def test_find_peak(mu: float, y_max: float) -> None:
+    x = np.linspace(-1.0, 1.0, 200)
+    y = y_max * np.exp(-((x - mu) ** 2))
+    x_peak, y_peak = utils.find_peak(x.tolist(), y.tolist())
+    x_err = abs((x_peak - mu) / (x.max() - x.min()))
+    y_err = abs((y_peak - y_max) / (y.max() - y.min()))
+    eps = 1e-2
+    assert x_err < eps, f"x_err is too large: {x_err:.6g}"
+    assert y_err < eps, f"y_err is too large: {y_err:.6g}"
+
+
+@pytest.mark.parametrize("mu", [0.0, 0.5])
+@pytest.mark.parametrize("sigma", [0.1, 0.2, 0.3])
+def test_find_half_range(mu: float, sigma: float) -> None:
+    x = np.linspace(-1.0, 1.0, 200)
+    y = np.exp(-((x - mu) ** 2) / (2 * sigma**2))
+    left, right = utils.find_half_range(x.tolist(), y.tolist())
+    HWHM = np.sqrt(2 * np.log(2)) * sigma
+    left_acc = max(-HWHM, x.min() - mu) + mu
+    right_acc = min(HWHM, x.max() - mu) + mu
+    left_err = abs((left - left_acc) / (x.max() - x.min()))
+    right_err = abs((right - right_acc) / (x.max() - x.min()))
+    eps = 1e-2
+    assert left_err < eps, f"left_err is too large: {left_err:.6g}"
+    assert right_err < eps, f"right_err is too large: {right_err:.6g}"
+
+
+@pytest.mark.parametrize("mu", [0.0, 0.5])
+@pytest.mark.parametrize("sigma", [0.1, 0.2, 0.3])
+def test_find_FWHM(mu: float, sigma: float) -> None:
+    x = np.linspace(-1.0, 1.0, 200)
+    y = np.exp(-((x - mu) ** 2) / (2 * sigma**2))
+    FWHM = utils.find_FWHM(x.tolist(), y.tolist())
+    left, right = utils.find_half_range(x.tolist(), y.tolist())
+    assert FWHM == abs(right - left)
 
 
 @pytest.mark.parametrize("x0", [0.1, 0.2])
