@@ -1,6 +1,172 @@
+import typing as t
 from collections import abc
 
+import numpy as np
 import pandas as pd
+
+NT = t.TypeVar("NT", int, float)
+
+
+def validate_xdata_and_ydata(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> None:
+    """
+    Validates `xdata` and `ydata`.
+
+    Parameters
+    ----------
+    xdata : collections.abc.Sequence[NT@validate_xdata_and_ydata]
+        The independent data for x axis.
+    ydata : collections.abc.Sequence[NT@validate_xdata_and_ydata]
+        The dependent data for y axis.
+
+    Raises
+    ------
+    ValueError
+        If either `xdata` or `ydata` is invalid.
+
+    Notes
+    -----
+    Validation List
+        - `xdata` and `ydata` must be the same length.
+        - Both `xdata` and `ydata` must not be empty.
+    """
+    if not len(xdata) == len(ydata):
+        raise ValueError("The length of `xdata` and `ydata` must be the same")
+    if len(xdata) == 0 or len(ydata) == 0:
+        raise ValueError("`xdata` and `ydata` must not be empty")
+
+
+def smooth(x: abc.Sequence[NT], window: int = 3) -> list[float]:
+    """
+    Smooths an array by mean filtering.
+
+    Parameters
+    ----------
+    x : collections.abc.Sequence[NT@smooth]
+        A sequence of numbers to be smoothed.
+    window : int
+        The window size for mean filtering.
+
+    Returns
+    -------
+    list[NT@smooth]
+        A list of smoothed values.
+
+    Examples
+    --------
+    >>> x = np.arange(10)
+    >>> smooth(x)
+    [0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 8.5]
+    """
+    return pd.Series(x).rolling(window, center=True, min_periods=1).mean().to_list()
+
+
+def find_peak(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> tuple[NT, NT]:
+    """
+    Finds the peak point.
+
+    Parameters
+    ----------
+    xdata : collections.abc.Sequence[NT@find_peak]
+        The independent data for x axis.
+    ydata : collections.abc.Sequence[NT@find_peak]
+        The dependent data for y axis.
+
+    Returns
+    -------
+    tuple[NT@find_peak, NT@find_peak]
+        The (x, y) value at peak.
+
+    Examples
+    --------
+    >>> x = np.linspace(-2, 2, 11)
+    >>> x
+    array([-2. , -1.6, -1.2, -0.8, -0.4,  0. ,  0.4,  0.8,  1.2,  1.6,  2. ])
+    >>> y = np.exp(-x**2)
+    >>> y
+    array([0.01831564, 0.07730474, 0.23692776, 0.52729242, 0.85214379,
+           1.        , 0.85214379, 0.52729242, 0.23692776, 0.07730474,
+           0.01831564])
+    >>> find_peak(x, y)
+    (0.0, 1.0)
+    """
+    validate_xdata_and_ydata(xdata, ydata)
+    peak_index = np.array(ydata).argmax()
+    return list(xdata)[peak_index], list(ydata)[peak_index]
+
+
+def find_half_range(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> tuple[NT, NT]:
+    """
+    Finds the two x values at which y is half maximum.
+
+    Parameters
+    ----------
+    xdata : collections.abc.Sequence[NT@find_half_range]
+        The independent data for x axis.
+    ydata : collections.abc.Sequence[NT@find_half_range]
+        The dependent data for y axis.
+
+    Returns
+    -------
+    tuple[NT@find_half_range, NT@find_half_range]
+        The two x values on left and right side of peak.
+
+    Examples
+    --------
+    >>> x = np.linspace(-2, 2, 11)
+    >>> x
+    array([-2. , -1.6, -1.2, -0.8, -0.4,  0. ,  0.4,  0.8,  1.2,  1.6,  2. ])
+    >>> y = np.exp(-x**2)
+    >>> y
+    array([0.01831564, 0.07730474, 0.23692776, 0.52729242, 0.85214379,
+           1.        , 0.85214379, 0.52729242, 0.23692776, 0.07730474,
+           0.01831564])
+    >>> find_half_range(x, y)
+    (-1.2, 1.2000000000000002)
+    """
+    validate_xdata_and_ydata(xdata, ydata)
+    xarray = np.array(xdata)
+    yarray = np.array(ydata)
+    under_half = yarray < yarray.max() / 2
+    left = xarray[(xarray < xarray[yarray.argmax()]) & under_half].max()
+    right = xarray[(xarray > xarray[yarray.argmax()]) & under_half].min()
+    return (
+        left if left is not np.nan else xarray.min(),
+        right if right is not np.nan else xarray.max(),
+    )
+
+
+def find_FWHM(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> NT:
+    """
+    Finds the full width at half maximum..
+
+    Parameters
+    ----------
+    xdata : collections.abc.Sequence[NT@find_FWHM]
+        The independent data for x axis.
+    ydata : collections.abc.Sequence[NT@find_FWHM]
+        The dependent data for y axis.
+
+    Returns
+    -------
+    NT@find_FWHM
+        The value of FWHM.
+
+    Examples
+    --------
+    >>> x = np.linspace(-2, 2, 11)
+    >>> x
+    array([-2. , -1.6, -1.2, -0.8, -0.4,  0. ,  0.4,  0.8,  1.2,  1.6,  2. ])
+    >>> y = np.exp(-x**2)
+    >>> y
+    array([0.01831564, 0.07730474, 0.23692776, 0.52729242, 0.85214379,
+           1.        , 0.85214379, 0.52729242, 0.23692776, 0.07730474,
+           0.01831564])
+    >>> find_FWHM(x, y)
+    2.4000000000000004
+    """
+    validate_xdata_and_ydata(xdata, ydata)
+    left, right = find_half_range(xdata, ydata)
+    return abs(right - left)
 
 
 def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
