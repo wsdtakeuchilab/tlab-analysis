@@ -30,7 +30,7 @@ test = [
   "pytest-describe~=2.0.1",
   "mypy~=0.971",
   "flake8~=5.0.4",
-  "isort~=5.10.1",
+  "isort~=5.11.1",
   "black~=22.10.0",
   "pandas-stubs~=1.5.1",
 ]
