@@ -18,29 +18,29 @@ jobs:
       matrix:
         python-version:
           - '3.10'
+          - '3.11'
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: actions/cache@v3
+      - name: Cache Python
+        uses: actions/cache@v3
         id: cache
+        env:
+          run-env: ${{ runner.os }}-python-${{ env.pythonLocation }}
         with:
           path: ${{ env.pythonLocation }}
-          key: >
-            ${{ runner.os }}-
-            python-
-            ${{ env.pythonLocation }}-
-            ${{ hashFiles('pyproject.toml') }}-
-            test
-      - name: Install dependencies
+          key: ${{ env.run-env }}-${{ hashFiles('pyproject.toml') }}-test
+      - name: Install hatch
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pip install -e .[test]
+        run: pip install hatch
       - name: Lint
-        run: bash scripts/lint.sh
+        run: hatch run test:lint
       - name: Test
-        run: bash scripts/test.sh --cov-report=xml
+        run: hatch run test:test --cov-report=xml
       - name: Upload coverage
         uses: codecov/codecov-action@v3
