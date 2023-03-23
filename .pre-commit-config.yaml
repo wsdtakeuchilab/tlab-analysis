@@ -5,47 +5,65 @@ repos:
     hooks:
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
+      - id: check-json
       - id: check-toml
       - id: check-yaml
         args:
           - --unsafe
       - id: end-of-file-fixer
+      - id: pretty-format-json
+        args:
+          - --autofix
+          - --no-sort-keys
+      - id: requirements-txt-fixer
       - id: trailing-whitespace
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
       - id: isort
+        name: Sort Python imports
   - repo: https://github.com/psf/black
-    rev: 23.1.0
+    rev: 23.3.0
     hooks:
       - id: black
-  - repo: https://github.com/PyCQA/flake8
+        name: Format Python files
+  - repo: https://github.com/pycqa/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
+        name: Lint Python files
   - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
     rev: 0.2.2
     hooks:
       - id: yamlfmt
+        name: Format YAML files
         args:
           - --mapping=2
           - --sequence=4
           - --offset=2
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.29.0
+    rev: v1.30.0
     hooks:
       - id: yamllint
+        name: Lint YAML files
         args:
           - --format=parsable
-  - repo: local
+  - repo: https://github.com/pecigonzalo/pre-commit-shfmt
+    rev: v2.1.0
     hooks:
-      - id: mypy
-        name: mypy
-        entry: mypy
-        language: python
-        types_or: [python, pyi]
+      - id: shell-fmt-docker
+        name: Format shell scripts
+        args:
+          - -i=2
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.9.0
+    hooks:
+      - id: shellcheck
+        name: Lint shell scripts
 ci:
   autofix_commit_msg: 🎨 [pre-commit.ci] Auto format from pre-commit.com hooks
   autoupdate_commit_msg: ⬆ [pre-commit.ci] pre-commit autoupdate
   skip:
-    - mypy
+    # Docker hooks
+    - shell-fmt-docker
+    - shellcheck
