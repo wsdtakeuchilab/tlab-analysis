@@ -14,7 +14,7 @@ authors = [
 # keywords = []
 # classifiers = []
 dependencies = [
-  "pandas~=1.5.3",
+  "pandas~=2.0.1",
   "scipy~=1.10.1",
 ]
 dynamic = ["version"]
