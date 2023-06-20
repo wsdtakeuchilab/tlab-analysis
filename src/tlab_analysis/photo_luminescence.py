@@ -323,7 +323,7 @@ class TimeResolved:
         because of smoothing before taking argmax.
         """
         assert "wavelength" in self.df.columns
-        return float(self.df["wavelength"][self.smoothed_intensity().argmax()])
+        return float(self.df["wavelength"][int(self.smoothed_intensity().argmax())])
 
     @property
     def peak_intensity(self) -> float:
@@ -345,10 +345,10 @@ class TimeResolved:
         wavelength = self.df["wavelength"]
         under_half = intensity < intensity.max() / 2
         left = wavelength[
-            (wavelength < wavelength[intensity.argmax()]) & under_half
+            (wavelength < wavelength[int(intensity.argmax())]) & under_half
         ].max()
         right = wavelength[
-            (wavelength > wavelength[intensity.argmax()]) & under_half
+            (wavelength > wavelength[int(intensity.argmax())]) & under_half
         ].min()
         return (
             float(left if left is not np.nan else wavelength.min()),

@@ -218,7 +218,9 @@ def describe_time_resolved() -> None:
         pd.testing.assert_frame_equal(tr.df, df)
 
     def test_peak_wavelength(tr: pl.TimeResolved) -> None:
-        peak_wavelength = float(tr.df["wavelength"][tr.smoothed_intensity().argmax()])
+        peak_wavelength = float(
+            tr.df["wavelength"][int(tr.smoothed_intensity().argmax())]
+        )
         assert tr.peak_wavelength == peak_wavelength
 
     def test_peak_intensity(tr: pl.TimeResolved) -> None:
@@ -230,10 +232,10 @@ def describe_time_resolved() -> None:
         wavelength = tr.df["wavelength"]
         under_half = intensity < intensity.max() / 2
         left = wavelength[
-            (wavelength < wavelength[intensity.argmax()]) & under_half
+            (wavelength < wavelength[int(intensity.argmax())]) & under_half
         ].max()
         right = wavelength[
-            (wavelength > wavelength[intensity.argmax()]) & under_half
+            (wavelength > wavelength[int(intensity.argmax())]) & under_half
         ].min()
         half_range = (
             float(left if left is not np.nan else wavelength.min()),

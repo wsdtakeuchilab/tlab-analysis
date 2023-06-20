@@ -276,7 +276,7 @@ def determine_fit_range_dc(
         )
     alpha = _alpha
     df = pd.DataFrame(dict(x=xdata, y=ydata)).sort_values(by="x", ignore_index=True)
-    left = df["x"][df["y"].shift(2).argmax()]
+    left = df["x"][int(df["y"].shift(2).argmax())]
     right = df["x"][
         (df.index > df["y"].argmax()) & (df["y"].ge(alpha * df["y"].max()))
     ].max()
