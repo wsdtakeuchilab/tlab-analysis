@@ -18,3 +18,9 @@ def filepath(
             return pathlib.Path(tmpdir) / filename
         case _:
             raise NotImplementedError
+
+
+@pytest.fixture()
+def write_raw_binary(filepath: os.PathLike[str], raw_binary: bytes) -> None:
+    with open(filepath, "wb") as f:
+        f.write(raw_binary)
