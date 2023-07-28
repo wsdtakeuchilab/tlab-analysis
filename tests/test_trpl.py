@@ -4,7 +4,6 @@ import typing as t
 from unittest import mock
 
 import numpy as np
-import numpy.typing as npt
 import pandas as pd
 import pytest
 
@@ -15,17 +14,14 @@ TIME_RESOLUTION = 480
 
 
 @pytest.fixture()
-def header() -> bytes:
-    return bytes.fromhex(
+def data() -> trpl.TRPLData:
+    random = np.random.RandomState(0)
+    header = bytes.fromhex(
         "49 4d cd 01 80 02 e0 01 00 00 00 00 02 00 00 00"
         "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
         "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
         "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
     )
-
-
-@pytest.fixture()
-def metadata() -> str:
     metadata = (
         "HiPic,1.0,100,1.0,0,0,4,8,0,0,0,01-01-1970,00:00:00,"
         "0,0,0,0,0, , , , ,0,0,0,0,0, , ,0,, , , ,0,0,, ,0,0,0,0,0,0,0,0,0,0,"
@@ -35,40 +31,15 @@ def metadata() -> str:
         "Spectrograph:Wavelength=490.000[nm], Grating=2 : 150g/mm, SlitWidthIn=100[um], Mode=Spectrograph\n"
         "Date:2022/01/01,00:00:00\n"
     )
-    return metadata
-
-
-@pytest.fixture()
-def streak_image() -> npt.NDArray[np.uint16]:
-    random = np.random.RandomState(0)
-    return random.randint(
-        0, 64, WAVELENGTH_RESOLUTION * TIME_RESOLUTION, dtype=np.uint16
-    )
-
-
-@pytest.fixture()
-def wavelength() -> npt.NDArray[np.float32]:
-    return np.linspace(435, 535, WAVELENGTH_RESOLUTION, dtype=np.float32)
-
-
-@pytest.fixture()
-def time() -> npt.NDArray[np.float32]:
-    return np.linspace(0, 10, TIME_RESOLUTION, dtype=np.float32)
-
-
-@pytest.fixture()
-def data(
-    header: bytes,
-    metadata: str,
-    streak_image: npt.NDArray[np.uint16],
-    wavelength: npt.NDArray[np.float32],
-    time: npt.NDArray[np.float32],
-) -> trpl.TRPLData:
+    time = np.linspace(0, 10, TIME_RESOLUTION, dtype=np.float32)
+    wavelength = np.linspace(435, 535, WAVELENGTH_RESOLUTION, dtype=np.float32)
     df = pd.DataFrame(
         dict(
             time=np.repeat(time, len(wavelength)),
             wavelength=np.tile(wavelength, len(time)),
-            intensity=streak_image,
+            intensity=random.randint(
+                0, 64, WAVELENGTH_RESOLUTION * TIME_RESOLUTION, dtype=np.uint16
+            ),
         )
     )
     data = trpl.TRPLData(df, header, metadata)
@@ -76,33 +47,25 @@ def data(
 
 
 @pytest.fixture()
-def raw_binary(
-    header: bytes,
-    metadata: str,
-    streak_image: npt.NDArray[np.uint16],
-    wavelength: npt.NDArray[np.float32],
-    time: npt.NDArray[np.float32],
-) -> bytes:
-    u8167 = trpl.TRPLData.u8167()
+def raw_binary(data: trpl.TRPLData) -> bytes:
+    u8167 = trpl.TRPLData.u8167
     return (
-        header
-        + metadata.encode("UTF-8")
-        + streak_image.astype(np.uint16).tobytes("C")
-        + wavelength.tobytes("C").ljust(
-            u8167.sector_size * u8167.num_sector_wavelength, b"\x00"
-        )
-        + time.tobytes("C").ljust(u8167.sector_size * u8167.num_sector_time, b"\x00")
+        data.header
+        + data.metadata.encode("UTF-8")
+        + data.intensity.to_numpy()
+        .tobytes("C")
+        .ljust(u8167.sector_size * u8167.num_sector_intensity, b"\x00")
+        + data.wavelength.unique()
+        .tobytes("C")
+        .ljust(u8167.sector_size * u8167.num_sector_wavelength, b"\x00")
+        + data.time.unique()
+        .tobytes("C")
+        .ljust(u8167.sector_size * u8167.num_sector_time, b"\x00")
     )
 
 
-@pytest.fixture()
-def write_raw_binary(filepath: os.PathLike[str], raw_binary: bytes) -> None:
-    with open(filepath, "wb") as f:
-        f.write(raw_binary)
-
-
-@pytest.mark.parametrize("filename", ["photo_luminescence_testcase.img"])
-@pytest.mark.usefixtures(write_raw_binary.__name__)
+@pytest.mark.parametrize("filename", ["trpl_testcase.img"])
+@pytest.mark.usefixtures("write_raw_binary")
 def test_read_img(filepath: os.PathLike[str], data: trpl.TRPLData) -> None:
     actual = trpl.read_img(filepath)
     assert actual == data
@@ -119,7 +82,7 @@ def test_read_img_invalid_type() -> None:
         trpl.read_img(None)  # type: ignore
 
 
-def describe_trpl_data_frame() -> None:
+def describe_trpl_data() -> None:
     def test_time(data: trpl.TRPLData) -> None:
         pd.testing.assert_series_equal(data.time, data.df["time"])
 
@@ -129,14 +92,12 @@ def describe_trpl_data_frame() -> None:
     def test_instensity(data: trpl.TRPLData) -> None:
         pd.testing.assert_series_equal(data.intensity, data.df["intensity"])
 
-    def test_to_streak_image(
-        data: trpl.TRPLData, streak_image: npt.NDArray[np.uint16]
-    ) -> None:
+    def test_to_streak_image(data: trpl.TRPLData) -> None:
         img = data.to_streak_image()
         assert img.shape == (TIME_RESOLUTION, WAVELENGTH_RESOLUTION)
         assert np.all(
             img
-            == streak_image.astype(np.float32).reshape(
+            == data.intensity.to_numpy(np.float32).reshape(
                 TIME_RESOLUTION, WAVELENGTH_RESOLUTION
             ),
         )
