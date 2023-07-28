@@ -66,20 +66,20 @@ def raw_binary(data: trpl.TRPLData) -> bytes:
 
 @pytest.mark.parametrize("filename", ["trpl_testcase.img"])
 @pytest.mark.usefixtures("write_raw_binary")
-def test_read_img(filepath: os.PathLike[str], data: trpl.TRPLData) -> None:
-    actual = trpl.read_img(filepath)
+def test_read_file(filepath: os.PathLike[str], data: trpl.TRPLData) -> None:
+    actual = trpl.read_file(filepath)
     assert actual == data
 
 
-def test_read_img_from_buffer(raw_binary: bytes, data: trpl.TRPLData) -> None:
+def test_read_file_from_buffer(raw_binary: bytes, data: trpl.TRPLData) -> None:
     with io.BytesIO(raw_binary) as f:
-        actual = trpl.read_img(f)
+        actual = trpl.read_file(f)
     assert actual == data
 
 
-def test_read_img_invalid_type() -> None:
+def test_read_file_invalid_type() -> None:
     with pytest.raises(ValueError):
-        trpl.read_img(None)  # type: ignore
+        trpl.read_file(None)  # type: ignore
 
 
 def describe_trpl_data() -> None:
