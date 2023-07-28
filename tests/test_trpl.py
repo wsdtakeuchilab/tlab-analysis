@@ -22,15 +22,15 @@ def data() -> trpl.TRPLData:
         "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
         "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
     )
-    metadata = (
+    metadata = [
         "HiPic,1.0,100,1.0,0,0,4,8,0,0,0,01-01-1970,00:00:00,"
-        "0,0,0,0,0, , , , ,0,0,0,0,0, , ,0,, , , ,0,0,, ,0,0,0,0,0,0,0,0,0,0,"
-        "2,1,nm,*0614925,2,1,ns,*0619021,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0.0,0,0,"
-        "StopCondition:PhotonCounting, Frame=10000, Time=673.1[sec], CountingRate=0.13[%]\n"
-        "Streak:Time=10 ns, Mode=Operate, Shutter=0, MCPGain=12, MCPSwitch=1, \n"
-        "Spectrograph:Wavelength=490.000[nm], Grating=2 : 150g/mm, SlitWidthIn=100[um], Mode=Spectrograph\n"
-        "Date:2022/01/01,00:00:00\n"
-    )
+        "0,0,0,0,0, , , , ,0,0,0,0,0, , ,0,, , , ,0,0,, ,0,0,0,0,0,0,0,0,0,0,2,"
+        "1,nm,*0614925,2,1,ns,*0619021,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0.0,0,0,"
+        "StopCondition:PhotonCounting, Frame=10000, Time=300.0[sec], CountingRate=0.10[%]\n",
+        "Streak:Time=10 ns, Mode=Operate, Shutter=0, MCPGain=10, MCPSwitch=1,\n",
+        "Spectrograph:Wavelength=490.000[nm], Grating=2 : 150g/mm, SlitWidthIn=100[um], Mode=Spectrograph\n",
+        "Date:1970/01/01,00:00:00\n",
+    ]
     time = np.linspace(0, 10, TIME_RESOLUTION, dtype=np.float32)
     wavelength = np.linspace(435, 535, WAVELENGTH_RESOLUTION, dtype=np.float32)
     df = pd.DataFrame(
@@ -51,7 +51,7 @@ def raw_binary(data: trpl.TRPLData) -> bytes:
     u8167 = trpl.TRPLData.u8167
     return (
         data.header
-        + data.metadata.encode("UTF-8")
+        + "".join(data.metadata).encode(u8167.encoding)
         + data.intensity.to_numpy()
         .tobytes("C")
         .ljust(u8167.sector_size * u8167.num_sector_intensity, b"\x00")

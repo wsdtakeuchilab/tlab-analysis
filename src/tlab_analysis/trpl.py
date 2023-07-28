@@ -17,15 +17,15 @@ DEFAULT_HEADER = bytes.fromhex(
     "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
     "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
 )
-DEFAULT_METADATA = (
+DEFAULT_METADATA = [
     "HiPic,1.0,100,1.0,0,0,4,8,0,0,0,01-01-1970,00:00:00,"
     "0,0,0,0,0, , , , ,0,0,0,0,0, , ,0,, , , ,0,0,, ,0,0,0,0,0,0,0,0,0,0,2,"
     "1,nm,*0614925,2,1,ns,*0619021,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0.0,0,0,"
-    "StopCondition:PhotonCounting, Frame=10000, Time=300.0[sec], CountingRate=0.10[%]\n"
-    "Streak:Time=10 ns, Mode=Operate, Shutter=0, MCPGain=10, MCPSwitch=1,\n"
-    "Spectrograph:Wavelength=490.000[nm], Grating=2 : 150g/mm, SlitWidthIn=100[um], Mode=Spectrograph\n"
-    "Date:1970/01/01,00:00:00\n"
-)
+    "StopCondition:PhotonCounting, Frame=10000, Time=300.0[sec], CountingRate=0.10[%]\n",
+    "Streak:Time=10 ns, Mode=Operate, Shutter=0, MCPGain=10, MCPSwitch=1,\n",
+    "Spectrograph:Wavelength=490.000[nm], Grating=2 : 150g/mm, SlitWidthIn=100[um], Mode=Spectrograph\n",
+    "Date:1970/01/01,00:00:00\n",
+]
 
 
 def read_img(filepath_or_buffer: os.PathLike[str] | io.BufferedIOBase) -> TRPLData:
@@ -63,9 +63,9 @@ def read_img(filepath_or_buffer: os.PathLike[str] | io.BufferedIOBase) -> TRPLDa
 
 
 def _read_img(file: io.BufferedIOBase) -> TRPLData:
-    u8167 = TRPLData.u8167()
+    u8167 = TRPLData.u8167
     header = file.read(64)
-    metadata = [file.readline() for _ in range(4)]
+    metadata = [file.readline().decode(u8167.encoding) for _ in range(4)]
     intensity = np.frombuffer(file.read(u8167.sector_size * 600), dtype=np.uint16)
     wavelength = np.frombuffer(file.read(u8167.sector_size * 4), dtype=np.float32)[
         : u8167.wavelength_resolution
@@ -80,7 +80,7 @@ def _read_img(file: io.BufferedIOBase) -> TRPLData:
             intensity=intensity,  # [arb. units]
         )
     )
-    data = TRPLData(df, header, b"".join(metadata).decode("UTF-8"))
+    data = TRPLData(df, header, metadata)
     return data
 
 
@@ -181,11 +181,14 @@ class TRPLData:
     """A dataframe of the measurement."""
     header: bytes = DEFAULT_HEADER
     """Bytes of the header of a raw binary from u8167."""
-    metadata: str = DEFAULT_METADATA
+    metadata: list[str] = dataclasses.field(
+        default_factory=lambda: list(DEFAULT_METADATA)
+    )
     """Meta information of the data from u8167."""
 
     @dataclasses.dataclass(frozen=True)
     class u8167:
+        encoding: str = "UTF-8"
         sector_size: int = 1024
         wavelength_resolution: int = 640
         time_resolution: int = 480
@@ -289,7 +292,7 @@ class TRPLData:
         time_size = u8167.sector_size * u8167.num_sector_time
         raw_binary = (
             self.header
-            + self.metadata.encode("UTF-8")
+            + "".join(self.metadata).encode(u8167.encoding)
             + self.intensity.to_numpy(np.uint16)
             .tobytes("C")
             .ljust(intensity_size, b"\x00")[:intensity_size]
