@@ -82,6 +82,13 @@ def test_read_file_invalid_type() -> None:
         trpl.read_file(None)  # type: ignore
 
 
+@pytest.mark.parametrize("filename", ["trpl_testcase.img"])
+@pytest.mark.usefixtures("write_raw_binary")
+def test_read_img(filepath: os.PathLike[str], data: trpl.TRPLData) -> None:
+    actual = trpl.read_img(filepath)
+    assert actual == data
+
+
 def describe_trpl_data() -> None:
     def test_time(data: trpl.TRPLData) -> None:
         pd.testing.assert_series_equal(data.time, data.df["time"])
