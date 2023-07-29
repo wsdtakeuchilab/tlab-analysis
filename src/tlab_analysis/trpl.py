@@ -96,8 +96,8 @@ def read_img(filepath_or_buffer: os.PathLike[str] | io.BufferedIOBase) -> TRPLDa
 
     Returns
     -------
-    tlab_analysis.trpl.TRPLDataFrame
-        A dataframe from the raw file.
+    tlab_analysis.trpl.TRPLData
+        A TRPLData object from the file.
 
     Raises
     ------

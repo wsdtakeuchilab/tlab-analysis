@@ -86,7 +86,7 @@ class CWPLData:
     Examples
     --------
     Create dataframe of data.
-    >>> grating = np.arange(4000, 4500)
+    >>> grating = np.arange(4000, 4010)
     >>> np.random.seed(0)
     >>> intensity = np.random.random(grating.size)
     >>> df = pd.DataFrame(
@@ -99,76 +99,69 @@ class CWPLData:
     Create a CWPLData object.
     >>> data = CWPLData(df)
     >>> data.df
-        grating  intensity
-    0       4000   0.548814
-    1       4001   0.715189
-    2       4002   0.602763
-    3       4003   0.544883
-    4       4004   0.423655
-    ..       ...        ...
-    495     4495   0.271653
-    496     4496   0.455444
-    497     4497   0.401714
-    498     4498   0.248413
-    499     4499   0.505866
-
-    [500 rows x 2 columns]
+       grating  intensity
+    0     4000   0.548814
+    1     4001   0.715189
+    2     4002   0.602763
+    3     4003   0.544883
+    4     4004   0.423655
+    5     4005   0.645894
+    6     4006   0.437587
+    7     4007   0.891773
+    8     4008   0.963663
+    9     4009   0.383442
 
     Access each column.
     >>> data.grating
-    0      4000
-    1      4001
-    2      4002
-    3      4003
-    4      4004
-        ... 
-    495    4495
-    496    4496
-    497    4497
-    498    4498
-    499    4499
-    Name: grating, Length: 500, dtype: int64
+    0    4000
+    1    4001
+    2    4002
+    3    4003
+    4    4004
+    5    4005
+    6    4006
+    7    4007
+    8    4008
+    9    4009
+    Name: grating, dtype: int64
     >>> data.intensity
-    0      0.548814
-    1      0.715189
-    2      0.602763
-    3      0.544883
-    4      0.423655
-            ...   
-    495    0.271653
-    496    0.455444
-    497    0.401714
-    498    0.248413
-    499    0.505866
-    Name: intensity, Length: 500, dtype: float64
+    0    0.548814
+    1    0.715189
+    2    0.602763
+    3    0.544883
+    4    0.423655
+    5    0.645894
+    6    0.437587
+    7    0.891773
+    8    0.963663
+    9    0.383442
+    Name: intensity, dtype: float64
 
     Get wavelength and caribrated wavelength.
     >>> data.wavelength
-    0      400.0
-    1      400.1
-    2      400.2
-    3      400.3
-    4      400.4
-        ...  
-    495    449.5
-    496    449.6
-    497    449.7
-    498    449.8
-    499    449.9
-    Name: grating, Length: 500, dtype: float64
+    0    400.0
+    1    400.1
+    2    400.2
+    3    400.3
+    4    400.4
+    5    400.5
+    6    400.6
+    7    400.7
+    8    400.8
+    9    400.9
+    Name: grating, dtype: float64
     >>> data.wavelength_caribrated
-    0      386.64700
-    1      386.75173
-    2      386.85646
-    3      386.96119
-    4      387.06592
-            ...    
-    495    438.48835
-    496    438.59308
-    497    438.69781
-    498    438.80254
-    499    438.90727
-    Name: grating, Length: 500, dtype: float64
+    0    386.64700
+    1    386.75173
+    2    386.85646
+    3    386.96119
+    4    387.06592
+    5    387.17065
+    6    387.27538
+    7    387.38011
+    8    387.48484
+    9    387.58957
+    Name: grating, dtype: float64
     """
 
     df: pd.DataFrame
