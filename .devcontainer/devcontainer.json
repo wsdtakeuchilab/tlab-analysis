@@ -14,7 +14,7 @@
         "python.linting.flake8Enabled": true
       },
       "extensions": [
-        "bungcip.better-toml",
+        "tamasfe.even-better-toml",
         "esbenp.prettier-vscode",
         "ninoseki.vscode-pylens",
         "ms-azuretools.vscode-docker",
