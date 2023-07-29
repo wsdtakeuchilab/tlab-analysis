@@ -66,14 +66,15 @@ def read_file(filepath_or_buffer: os.PathLike[str] | io.BufferedIOBase) -> CWPLD
 
 def _read_file(file: io.BufferedIOBase) -> CWPLData:
     metadata = [file.readline().decode(CWPLData.HR320.encoding) for _ in range(18)]
-    df = pd.read_csv(
-        file,
-        header=0,
-        encoding=CWPLData.HR320.encoding,
-        usecols=[1, 2],
-        names=["grating", "intensity"],
-        quotechar="'",
-    )
+    with io.BytesIO(file.read()) as f:  # This with block is for passing mypy
+        df = pd.read_csv(
+            f,
+            header=0,
+            encoding=CWPLData.HR320.encoding,
+            usecols=[1, 2],
+            names=["grating", "intensity"],
+            quotechar="'",
+        )
     data = CWPLData(df, metadata)
     return data
 
