@@ -30,7 +30,7 @@ test = [
   "pytest-describe==2.1.0",
   "pytest-mock==3.11.1",
   "mypy==1.4.1",
-  "flake8==6.0.0",
+  "flake8==6.1.0",
   "isort==5.12.0",
   "black==23.7.0",
 ]
