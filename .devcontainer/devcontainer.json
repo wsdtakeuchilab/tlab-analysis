@@ -1,28 +1,30 @@
 {
   "name": "Python 3",
-  "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.11-bullseye",
+  "image": "mcr.microsoft.com/vscode/devcontainers/python:3.11",
   "mounts": [],
   "runArgs": [],
   "features": {
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "bash-completion"
+    },
+    "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
+    "ghcr.io/devcontainers-contrib/features/hatch:2": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
   "customizations": {
     "vscode": {
-      "settings": {
-        "python.defaultInterpreterPath": "/usr/local/bin/python",
-        "python.linting.enabled": true,
-        "python.linting.flake8Enabled": true
-      },
+      "settings": {},
       "extensions": [
-        "bungcip.better-toml",
         "esbenp.prettier-vscode",
         "ninoseki.vscode-pylens",
         "ms-azuretools.vscode-docker",
+        "ms-python.black-formatter",
         "ms-python.flake8",
         "ms-python.isort",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "redhat.vscode-yaml",
+        "tamasfe.even-better-toml",
         "timonwong.shellcheck",
         "yzhang.markdown-all-in-one"
       ]
@@ -32,11 +34,10 @@
     "Upgrade pip": "pip install -U pip"
   },
   "postCreateCommand": {
-    "Install git-completion": "echo 'source /usr/share/bash-completion/completions/git' >> ~/.bashrc",
-    "Install pip-completion": "echo 'source <(pip completion --bash)' >> ~/.bashrc",
-    "Install dev tools": "pip install --user hatch pre-commit && pre-commit install",
-    "Install the project": "pip install --user -e '.[test,stub]'",
-    "Install optional dependencies": "pip install --user -r .devcontainer/requirements.txt"
+    "install pre-commit": "pre-commit install",
+    "install pip-completion": "echo 'source <(pip completion --bash)' >> ~/.bashrc",
+    "install the project": "pip install --user -e '.[test,stub]'",
+    "install optional dependencies": "pip install --user -r .devcontainer/requirements.txt"
   },
   "remoteUser": "vscode"
 }

@@ -48,6 +48,7 @@ repos:
         name: Lint YAML files
         args:
           - --format=parsable
+          - --config-data=relaxed
   - repo: https://github.com/pecigonzalo/pre-commit-shfmt
     rev: v2.1.0
     hooks:
