@@ -13,7 +13,6 @@
     "vscode": {
       "extensions": [
         "esbenp.prettier-vscode",
-        "ninoseki.vscode-pylens",
         "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
         "ms-azuretools.vscode-docker",
@@ -23,6 +22,7 @@
         "ms-python.isort",
         "ms-python.python",
         "ms-python.vscode-pylance",
+        "ninoseki.vscode-pylens",
         "redhat.vscode-yaml",
         "tamasfe.even-better-toml",
         "timonwong.shellcheck",
