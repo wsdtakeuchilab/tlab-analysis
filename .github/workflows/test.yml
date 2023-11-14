@@ -23,16 +23,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Cache Python
-        uses: actions/cache@v3
-        id: cache
-        env:
-          run-env: ${{ runner.os }}-python-${{ env.pythonLocation }}
-        with:
-          path: ${{ env.pythonLocation }}
-          key: ${{ env.run-env }}-${{ hashFiles('pyproject.toml') }}-test
       - name: Install hatch
-        if: steps.cache.outputs.cache-hit != 'true'
         run: pipx install hatch
       - name: Lint
         run: hatch run lint:lint
