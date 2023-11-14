@@ -23,7 +23,7 @@ repos:
       - id: isort
         name: Sort Python imports
   - repo: https://github.com/psf/black
-    rev: 23.10.1
+    rev: 23.11.0
     hooks:
       - id: black
         name: Format Python files
@@ -42,7 +42,7 @@ repos:
           - --sequence=4
           - --offset=2
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.32.0
+    rev: v1.33.0
     hooks:
       - id: yamllint
         name: Lint YAML files

@@ -1,4 +1,4 @@
 *
 !.gitignore
 !devcontainer.json
-!requirements.txt
+!create-hatch-env.sh
