@@ -39,7 +39,9 @@ jobs:
       - name: Check type
         run: hatch run check-type
       - name: Test
-        run: hatch run test --cov-report=xml
+        run: |
+          hatch run test-doc
+          hatch run test --cov-report=xml
       - name: Upload coverage
         uses: codecov/codecov-action@v3
   pre-commit:
