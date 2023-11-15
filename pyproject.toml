@@ -41,9 +41,9 @@ dependencies = [
 ]
 
 [tool.hatch.envs.default.scripts]
-test = "pytest --cov-report=term-missing:skip-covered src tests"
-test-doc = "pytest --doctest-modules src"
-check-type = "mypy src tests"
+test = "pytest --cov-report=term-missing:skip-covered src tests {args}"
+test-doc = "pytest --doctest-modules src {args}"
+check-type = "mypy src tests {args}"
 
 [tool.hatch.envs.lint]
 skip-install = true
