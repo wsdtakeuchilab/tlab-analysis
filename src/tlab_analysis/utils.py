@@ -44,7 +44,6 @@ def smooth(x: abc.Sequence[NT], window: int = 3) -> list[float]:
     ----------
     x : collections.abc.Sequence[NT@smooth]
         A sequence of numbers to be smoothed.
-        The window size for mean filtering.
     window : int
         The window size for mean filtering.
 
