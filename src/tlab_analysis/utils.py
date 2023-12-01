@@ -36,7 +36,7 @@ def validate_xdata_and_ydata(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -
         raise ValueError("`xdata` and `ydata` must not be empty")
 
 
-def smooth(x: abc.Sequence[NT], window: int = 3) -> list[float]:
+def smooth(x: abc.Sequence[NT], window: int | float = 3) -> list[NT]:
     """
     Smooths an array by mean filtering.
 
@@ -44,8 +44,9 @@ def smooth(x: abc.Sequence[NT], window: int = 3) -> list[float]:
     ----------
     x : collections.abc.Sequence[NT@smooth]
         A sequence of numbers to be smoothed.
-    window : int
+    window : int | float
         The window size for mean filtering.
+        if `window` < 1, the value will be interpreted as the ratio to the length of `x`.
 
     Returns
     -------
@@ -57,8 +58,18 @@ def smooth(x: abc.Sequence[NT], window: int = 3) -> list[float]:
     >>> x = np.arange(10)
     >>> smooth(x)
     [0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 8.5]
+    >>> smooth(x, window=3)
+    [0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 8.5]
+    >>> smooth(x, window=0.3)
+    [0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 8.5]
     """
-    return pd.Series(x).rolling(window, center=True, min_periods=1).mean().to_list()
+    if window < 0:
+        raise ValueError(f"`window` must be a positive number: {window}")
+    elif 0 < window <= 1:
+        _window = int(len(x) * window)
+    else:
+        _window = int(window)
+    return pd.Series(x).rolling(_window, center=True, min_periods=1).mean().to_list()
 
 
 def find_peak(

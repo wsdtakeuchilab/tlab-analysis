@@ -31,13 +31,31 @@ def test_validate_xdata_and_ydata_invalid(
 
 
 @pytest.mark.parametrize("window", [3, 5, 7])
-def test_smooth(window: int) -> None:
+def test_smooth_when_window_is_int(window: int) -> None:
     x = list(range(100))
     smoothed = utils.smooth(x, window)
     assert (
         smoothed
         == pd.Series(x).rolling(window, center=True, min_periods=1).mean().to_list()
     )
+
+
+@pytest.mark.parametrize("window", [0.3, 0.5, 0.7])
+def test_smooth_when_window_is_float(window: float) -> None:
+    x = list(range(100))
+    smoothed = utils.smooth(x, window)
+    _window = int(len(x) * window)
+    assert (
+        smoothed
+        == pd.Series(x).rolling(_window, center=True, min_periods=1).mean().to_list()
+    )
+
+
+@pytest.mark.parametrize("window", [-0.3, -3])
+def test_smooth_when_window_is_negative(window: int | float) -> None:
+    x = list(range(100))
+    with pytest.raises(ValueError):
+        utils.smooth(x, window)
 
 
 @pytest.mark.skip("deprecated on version 0.5.0")
