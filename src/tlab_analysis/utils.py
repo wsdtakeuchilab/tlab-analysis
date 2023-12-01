@@ -1,4 +1,5 @@
 import typing as t
+import warnings
 from collections import abc
 
 import numpy as np
@@ -71,7 +72,9 @@ def smooth(x: abc.Sequence[NT], window: int | float = 3) -> list[NT]:
     return pd.Series(x).rolling(_window, center=True, min_periods=1).mean().to_list()
 
 
-def find_peak(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> tuple[NT, NT]:
+def find_peak(
+    xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]
+) -> tuple[NT, NT]:  # pragma: no cover
     """
     Finds the peak point.
 
@@ -100,12 +103,19 @@ def find_peak(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> tuple[NT, NT]
     >>> find_peak(x, y)
     (0.0, 1.0)
     """
+    warnings.warn(
+        f"{find_peak.__name__} is deprecated and will be removed after version 0.5.0. "
+        f"Use scipy.signal.find_peaks instead.",
+        stacklevel=2,
+    )
     validate_xdata_and_ydata(xdata, ydata)
     peak_index = np.array(ydata).argmax()
     return list(xdata)[peak_index], list(ydata)[peak_index]
 
 
-def find_half_range(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> tuple[NT, NT]:
+def find_half_range(
+    xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]
+) -> tuple[NT, NT]:  # pragma: no cover
     """
     Finds the two x values at which y is half maximum.
 
@@ -134,6 +144,11 @@ def find_half_range(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> tuple[N
     >>> find_half_range(x, y)
     (-1.2, 1.2000000000000002)
     """
+    warnings.warn(
+        f"{find_half_range.__name__} is deprecated and will be removed after version 0.5.0. "
+        f"Use scipy.signal.find_peaks instead.",
+        stacklevel=2,
+    )
     validate_xdata_and_ydata(xdata, ydata)
     xarray = np.array(xdata)
     yarray = np.array(ydata)
@@ -146,7 +161,9 @@ def find_half_range(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> tuple[N
     )
 
 
-def find_FWHM(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> NT:
+def find_FWHM(
+    xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]
+) -> NT:  # pragma: no cover
     """
     Finds the full width at half maximum..
 
@@ -175,6 +192,11 @@ def find_FWHM(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> NT:
     >>> find_FWHM(x, y)
     2.4000000000000004
     """
+    warnings.warn(
+        f"{find_FWHM.__name__} is deprecated and will be removed after version 0.5.0. "
+        f"Use scipy.signal.find_peaks instead.",
+        stacklevel=2,
+    )
     validate_xdata_and_ydata(xdata, ydata)
     left, right = find_half_range(xdata, ydata)
     return abs(right - left)

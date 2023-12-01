@@ -68,7 +68,9 @@ def raw_binary(data: cwpl.CWPLData) -> bytes:
 
 @pytest.mark.parametrize("filename", ["cwpl_testcase.img"])
 @pytest.mark.usefixtures("write_raw_binary")
-def test_read_file(filepath: os.PathLike[str], data: cwpl.CWPLData) -> None:
+def test_read_file_from_str_or_pathlike(
+    filepath: str | os.PathLike[str], data: cwpl.CWPLData
+) -> None:
     actual = cwpl.read_file(filepath)
     assert actual == data
 

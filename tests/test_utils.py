@@ -58,6 +58,7 @@ def test_smooth_when_window_is_negative(window: int | float) -> None:
         utils.smooth(x, window)
 
 
+@pytest.mark.skip("deprecated on version 0.5.0")
 @pytest.mark.parametrize("mu", [-0.5, 0.1, 0.5])
 @pytest.mark.parametrize("y_max", [1.0, 3.0, 5.0])
 def test_find_peak(mu: float, y_max: float) -> None:
@@ -71,6 +72,7 @@ def test_find_peak(mu: float, y_max: float) -> None:
     assert y_err < eps, f"y_err is too large: {y_err:.6g}"
 
 
+@pytest.mark.skip("deprecated on version 0.5.0")
 @pytest.mark.parametrize("mu", [0.0, 0.5])
 @pytest.mark.parametrize("sigma", [0.1, 0.2, 0.3])
 def test_find_half_range(mu: float, sigma: float) -> None:
@@ -87,6 +89,7 @@ def test_find_half_range(mu: float, sigma: float) -> None:
     assert right_err < eps, f"right_err is too large: {right_err:.6g}"
 
 
+@pytest.mark.skip("deprecated on version 0.5.0")
 @pytest.mark.parametrize("mu", [0.0, 0.5])
 @pytest.mark.parametrize("sigma", [0.1, 0.2, 0.3])
 def test_find_FWHM(mu: float, sigma: float) -> None:
