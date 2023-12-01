@@ -66,7 +66,9 @@ def raw_binary(data: trpl.TRPLData) -> bytes:
 
 @pytest.mark.parametrize("filename", ["trpl_testcase.img"])
 @pytest.mark.usefixtures("write_raw_binary")
-def test_read_file(filepath: os.PathLike[str], data: trpl.TRPLData) -> None:
+def test_read_file_from_str_or_pathlike(
+    filepath: str | os.PathLike[str], data: trpl.TRPLData
+) -> None:
     actual = trpl.read_file(filepath)
     assert actual == data
 
