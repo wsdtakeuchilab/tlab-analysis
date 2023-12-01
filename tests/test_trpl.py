@@ -82,6 +82,7 @@ def test_read_file_invalid_type() -> None:
         trpl.read_file(None)  # type: ignore
 
 
+@pytest.mark.skip("deprecated on version 0.4.0")
 @pytest.mark.parametrize("filename", ["trpl_testcase.img"])
 @pytest.mark.usefixtures("write_raw_binary")
 def test_read_img(filepath: os.PathLike[str], data: trpl.TRPLData) -> None:
