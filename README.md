@@ -77,29 +77,46 @@ fig.show()
 ```python
 from tlab_analysis import utils
 
-hdf = data.aggregate_along_time()
-fig = px.line(hdf, x="wavelength", y="intensity")
-wavelength = hdf["wavelength"]
-intensity = hdf["intensity"]
-peak = utils.find_peak(wavelength, intensity)
-fig.add_vline(peak[0])
+wdf = data.aggregate_along_time()
+fig = px.line(wdf, x="wavelength", y="intensity")
 fig.show()
 ```
 
 ![h-figure](./resources/images/trpl/h-figure.svg)
 
-Get its properties.
+Find the peaks and their FWHMs.
 
 ```python
-peak_wavelength, peak_intensity = utils.find_peak(wavelength, intensity)
-FWHM = utils.find_FWHM(wavelength, intensity)
+peaks = utils.find_peaks(wdf["wavelength"], wdf["intensity"])
+fig.add_scatter(
+    x=list(map(lambda p: p.x, peaks)),
+    y=list(map(lambda p: p.y, peaks)),
+    mode="markers+text",
+    text=list(map(lambda p: f"{p.x:.1f}nm", peaks)),
+    textposition="top center",
+    marker=go.scatter.Marker(size=12, symbol="star"),
+    showlegend=False,
+)
+for peak in peaks:
+    fig.add_shape(
+        type="line",
+        label=go.layout.shape.Label(text=f"{peak.width:.1f}nm", yanchor="top"),
+        x0=peak.x0,
+        x1=peak.x1,
+        y0=peak.y0,
+        y1=peak.y0,
+        showlegend=False,
+        line_color="orange",
+    )
+fig.show()
 ```
+![peaks](./resources/images/trpl/h-figure-peaks.svg)
 
 #### V-figure
 
 ```python
-vdf = data.aggregate_along_wavelength(wavelength_range=(470, 500))
-fig = px.line(vdf, x="time", y="intensity")
+tdf = data.aggregate_along_wavelength(wavelength_range=(470, 510))
+fig = px.line(tdf, x="time", y="intensity")
 fig.show()
 ```
 
@@ -109,29 +126,28 @@ Fit a double exponential function to the data to estimate its relaxation times.
 
 ```python
 import numpy as np
-from scipy import optimize
+
 
 def double_exponential(t, a, tau1, b, tau2):
     return a * np.exp(-t / tau1) + b * np.exp(-t / tau2)
 
 
-time = vdf["time"]
-intensity = vdf["intensity"]
+time = tdf["time"]
+intensity = tdf["intensity"]
 fitting_range = utils.determine_fit_range_dc(time, intensity)
 index = time.between(*fitting_range)
-params, cov = optimize.curve_fit(
+params, cov = utils.curve_fit(
     double_exponential,
-    xdata=time[index],
-    ydata=intensity[index],
+    time[index],
+    intensity[index],
     bounds=(0.0, np.inf),
-    maxfev=10000,
 )
-vdf["fit"] = double_exponential(time[index], *params)
-fig = px.line(vdf, x="time", y=["intensity", "fit"])
+tdf["fit"] = double_exponential(time[index], *params)
+fig = px.line(tdf, x="time", y=["intensity", "fit"])
 fig.show()
 ```
 
-![fitting curve](./resources/images/trpl/fit.svg)
+![fitting curve](./resources/images/trpl/v-figure-fit.svg)
 
 ## License
 
