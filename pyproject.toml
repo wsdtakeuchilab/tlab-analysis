@@ -36,7 +36,7 @@ mypy = [
 ]
 jupyter = [
   "ipywidgets==8.1.1",
-  "jupyterlab==4.0.8",
+  "jupyterlab==4.0.9",
   "kaleido==0.2.1, !=0.2.1.post1",
   "plotly==5.18.0",
 ]
