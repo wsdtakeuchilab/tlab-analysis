@@ -161,7 +161,7 @@ def find_peaks(
                 x=x[peak],
                 y=y[peak],
                 x0=_roots[_idx - 1] if _idx > 0 else x[0],
-                x1=_roots[_idx] if _idx < len(x) else x[-1],
+                x1=_roots[_idx] if _idx < len(_roots) else x[-1],
                 y0=y[peak] * width_height_ratio,
             )
         )
