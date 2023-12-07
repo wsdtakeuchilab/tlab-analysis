@@ -92,6 +92,26 @@ def test_find_peaks(
     assert x1_err < eps, f"x1_err is too large: {x1_err:.6g}"
 
 
+@pytest.mark.parametrize(
+    "x",
+    [
+        [0, 0, 4, 12, 9, 6, 4, 3, 2, 2, 1, 1, 0, 0],
+        [0, 0, 4, 12, 10, 8, 7, 6, 5, 4, 4, 3, 3, 3],
+        [0, 0, 4, 12, 9, 5, 6, 3, 2, 2, 1, 1, 1, 0],
+    ],
+)
+@pytest.mark.parametrize("high", [0.9, 0.8, 0.7])
+@pytest.mark.parametrize("low", [0.1, 0.2, 0.3])
+def test_find_decay_range(x: list[int], high: float, low: float) -> None:
+    left, right = utils.find_decay_range(x, high, low)
+    max_x = max(x)
+    argmax = x.index(max_x)
+    assert left >= argmax
+    assert right >= argmax
+    assert all(map(lambda a: a > max_x * high, x[argmax:left]))
+    assert all(map(lambda a: a > max_x * low, x[argmax:right]))
+
+
 @pytest.mark.parametrize("x0", [0.1, 0.2])
 @pytest.mark.parametrize("y0", [0.1, 0.2, 0.3])
 @pytest.mark.parametrize("tau", [0.1, 0.2, 0.3])
@@ -109,6 +129,7 @@ def test_find_scdc(x0: float, y0: float, tau: float, seed: int) -> None:
     assert y_err < eps, f"y_err is too large: {y_err:.6g}"
 
 
+@pytest.mark.skip("deprecated on version 0.6.0")
 @pytest.mark.parametrize("x0", [0.1, 0.2])
 @pytest.mark.parametrize("tau", [0.1, 0.2, 0.3, 0.4])
 @pytest.mark.parametrize("seed", [0, 1])
