@@ -3,6 +3,7 @@ from __future__ import annotations
 import bisect
 import dataclasses
 import typing as t
+import warnings
 from collections import abc
 
 import numpy as np
@@ -167,6 +168,52 @@ def find_peaks(
     return results
 
 
+def find_decay_range(
+    x: abc.Sequence[NT],
+    high: float = 0.9,
+    low: float = 0.1,
+) -> tuple[int, int]:
+    """
+    Finds the range of decay.
+
+    Parameters
+    ----------
+    x : collections.abc.Sequence[NT@find_decay_range]
+        A sequence of numbers to find the decay range.
+    high : float
+        The ratio of the upper end to the maximum of `x`.
+    low : float
+        The ratio of the lower end to the maximum of `x`.
+
+    Returns
+    -------
+    tuple[int, int]
+        The indices of the decay range.
+
+    Examples
+    --------
+    >>> x = [0, 0, 4, 12, 9, 6, 4, 3, 2, 2, 1, 0, 0]
+    >>> find_decay_range(x)
+    (4, 10)
+    >>> x[4:10]
+    [9, 6, 4, 3, 2, 2]
+    >>> find_decay_range(x, high=0.7)
+    (5, 10)
+    >>> find_decay_range(x, low=0.2)
+    (4, 8)
+    """
+    _x = np.array(x)
+    max_index = _x.argmax()
+    max_x = _x.max()
+    left = (
+        bisect.bisect_left(np.array(_x[max_index:] <= max_x * high), True) + max_index
+    )
+    right = (
+        bisect.bisect_left(np.array(_x[max_index:] <= max_x * low), True) + max_index
+    )
+    return int(left), int(right)
+
+
 def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
     xdata: abc.Sequence[NT],
     ydata: abc.Sequence[NT],
@@ -228,7 +275,7 @@ def determine_fit_range_dc(
     *,
     spline_size: int = 1000,
     _decay_ratio: float = 0.10,
-) -> tuple[float, float]:
+) -> tuple[float, float]:  # pragma: no cover
     """
     Determines a range of x axis for fitting to a decay curve.
 
@@ -260,6 +307,11 @@ def determine_fit_range_dc(
     --------
     https://github.com/wasedatakeuchilab/tlab-analysis/blob/master/resources/images/utils/determine_fit_range_dc.svg
     """
+    warnings.warn(
+        f"{determine_fit_range_dc.__name__} is deprecated and will be removed after version 0.6.0. "
+        f"Use {find_decay_range.__name__} instead.",
+        stacklevel=2,
+    )
     validate_xdata_and_ydata(xdata, ydata)
     # Create a B-Spline curve
     spl = interpolate.make_smoothing_spline(xdata, ydata)
