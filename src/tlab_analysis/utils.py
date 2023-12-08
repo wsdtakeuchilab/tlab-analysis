@@ -3,25 +3,24 @@ from __future__ import annotations
 import bisect
 import dataclasses
 import typing as t
-import warnings
 from collections import abc
 
 import numpy as np
 import pandas as pd
 from scipy import interpolate, optimize, signal
 
-NT = t.TypeVar("NT", int, float)
 
-
-def validate_xdata_and_ydata(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -> None:
+def validate_xdata_and_ydata(
+    xdata: abc.Collection[float], ydata: abc.Collection[float]
+) -> None:
     """
     Validates `xdata` and `ydata`.
 
     Parameters
     ----------
-    xdata : collections.abc.Sequence[NT@validate_xdata_and_ydata]
+    xdata : collections.abc.Collection[float]
         The independent data for x axis.
-    ydata : collections.abc.Sequence[NT@validate_xdata_and_ydata]
+    ydata : collections.abc.Collection[float]
         The dependent data for y axis.
 
     Raises
@@ -41,13 +40,13 @@ def validate_xdata_and_ydata(xdata: abc.Sequence[NT], ydata: abc.Sequence[NT]) -
         raise ValueError("`xdata` and `ydata` must not be empty")
 
 
-def smooth(x: abc.Sequence[NT], window: int | float = 3) -> list[float]:
+def smooth(x: abc.Collection[float], window: int | float = 3) -> list[float]:
     """
     Smooths an array by mean filtering.
 
     Parameters
     ----------
-    x : collections.abc.Sequence[NT@smooth]
+    x : collections.abc.Collection[float]
         A sequence of numbers to be smoothed.
     window : int | float
         The window size for mean filtering.
@@ -74,7 +73,9 @@ def smooth(x: abc.Sequence[NT], window: int | float = 3) -> list[float]:
         _window = int(len(x) * window)
     else:
         _window = int(window)
-    return pd.Series(x).rolling(_window, center=True, min_periods=1).mean().to_list()
+    return (
+        pd.Series(list(x)).rolling(_window, center=True, min_periods=1).mean().to_list()
+    )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -97,8 +98,8 @@ class Peak:
 
 
 def find_peaks(
-    xdata: abc.Sequence[NT],
-    ydata: abc.Sequence[NT],
+    xdata: abc.Collection[float],
+    ydata: abc.Collection[float],
     *,
     spline_size: int = 1000,
     width: int = 50,
@@ -110,9 +111,9 @@ def find_peaks(
 
     Parameters
     ----------
-    xdata : collections.abc.Sequence[NT@find_peaks]
+    xdata : collections.abc.Collection[float]
         The independent data for x axis.
-    ydata : collections.abc.Sequence[NT@find_peaks]
+    ydata : collections.abc.Collection[float]
         The dependent data for y axis.
     spline_size : int
         The number of points for spline interpolation.
@@ -169,7 +170,7 @@ def find_peaks(
 
 
 def find_decay_range(
-    x: abc.Sequence[NT],
+    x: abc.Collection[float],
     high: float = 0.9,
     low: float = 0.1,
 ) -> tuple[int, int]:
@@ -178,7 +179,7 @@ def find_decay_range(
 
     Parameters
     ----------
-    x : collections.abc.Sequence[NT@find_decay_range]
+    x : collections.abc.Collection[float]
         A sequence of numbers to find the decay range.
     high : float
         The ratio of the upper end to the maximum of `x`.
@@ -215,8 +216,8 @@ def find_decay_range(
 
 
 def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
-    xdata: abc.Sequence[NT],
-    ydata: abc.Sequence[NT],
+    xdata: abc.Collection[float],
+    ydata: abc.Collection[float],
     *,
     _window: int = 10,
     _k: int = 2,
@@ -226,9 +227,9 @@ def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
 
     Parameters
     ----------
-    xdata : collections.abc.Sequence[NT@find_scdc]
+    xdata : collections.abc.Collection[float]
         The independent data for x axis.
-    ydata : collections.abc.Sequence[NT@find_scdc]
+    ydata : collections.abc.Collection[float]
         The dependent data for y axis.
 
     Returns
@@ -270,8 +271,8 @@ def find_scdc(  # SCDC: the Start Coordinates of a Decay Curve
 
 
 def determine_fit_range_dc(
-    xdata: abc.Sequence[NT],
-    ydata: abc.Sequence[NT],
+    xdata: abc.Collection[float],
+    ydata: abc.Collection[float],
     *,
     spline_size: int = 1000,
     _decay_ratio: float = 0.10,
@@ -281,9 +282,9 @@ def determine_fit_range_dc(
 
     Parameters
     ----------
-    xdata : collections.abc.Sequence[NT@determine_fit_range_dc]
+    xdata : collections.abc.Collection[float]
         The independent data for x axis.
-    ydata : collections.abc.Sequence[NT@determine_fit_range_dc]
+    ydata : collections.abc.Collection[float]
         The dependent data for y axis.
     spline_size : int
         The number of points for spline interpolation.
@@ -307,9 +308,12 @@ def determine_fit_range_dc(
     --------
     https://github.com/wasedatakeuchilab/tlab-analysis/blob/master/resources/images/utils/determine_fit_range_dc.svg
     """
+    import warnings
+
     warnings.warn(
         f"{determine_fit_range_dc.__name__} is deprecated and will be removed after version 0.6.0. "
         f"Use {find_decay_range.__name__} instead.",
+        category=FutureWarning,
         stacklevel=2,
     )
     validate_xdata_and_ydata(xdata, ydata)
@@ -328,8 +332,8 @@ def determine_fit_range_dc(
 
 def curve_fit(
     func: t.Any,
-    xdata: abc.Sequence[NT],
-    ydata: abc.Sequence[NT],
+    xdata: abc.Collection[float],
+    ydata: abc.Collection[float],
     *,
     spline_size: int = 1000,
     **kwargs: t.Any,
@@ -341,9 +345,9 @@ def curve_fit(
     ----------
     func : Any
         The model function, f(x, ...).
-    xdata : collections.abc.Sequence[NT@curve_fit]
+    xdata : collections.abc.Collection[float]
         The independent data for x axis.
-    ydata : collections.abc.Sequence[NT@curve_fit]
+    ydata : collections.abc.Collection[float]
         The dependent data for y axis.
     spline_size : int
         The number of points for spline interpolation.
