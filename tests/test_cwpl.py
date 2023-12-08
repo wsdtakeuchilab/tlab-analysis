@@ -5,11 +5,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from tests import FixtureRequest
 from tlab_analysis import cwpl
 
 
-@pytest.fixture()
-def data() -> cwpl.CWPLData:
+@pytest.fixture(params=[0, 1, 2])
+def data(request: FixtureRequest[int]) -> cwpl.CWPLData:
     metadata = [
         "4300\r\n",
         "5300\r\n",
@@ -30,7 +31,7 @@ def data() -> cwpl.CWPLData:
         '"no data"\r\n',
         '"no data"\r\n',
     ]
-    random = np.random.RandomState(0)
+    random = np.random.RandomState(request.param)
     grating = np.arange(4000, 5000, step=2)
     intensity = random.random(grating.size).round(4)
     df = pd.DataFrame(

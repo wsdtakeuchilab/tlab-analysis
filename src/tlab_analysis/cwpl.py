@@ -50,10 +50,6 @@ def read_file(
     ------
     ValueError
         If `filepath_or_buffer` is invalid.
-
-    Examples
-    --------
-    >>> data = read_file("data.img")  # doctest: +SKIP
     """
     if isinstance(filepath_or_buffer, (str, os.PathLike)):
         with open(filepath_or_buffer, "rb") as f:
@@ -62,7 +58,7 @@ def read_file(
         return _read_file(filepath_or_buffer)
     else:
         raise ValueError(
-            "The type of filepath_or_buffer must be os.PathLike or io.BufferedIOBase"
+            f"Invalid type for filepath_or_buffer: {type(filepath_or_buffer)}"
         )
 
 
@@ -84,11 +80,11 @@ def _read_file(file: io.BufferedIOBase) -> CWPLData:
 @dataclasses.dataclass(frozen=True)
 class CWPLData:
     """
-    Data class for continuous wave photo luminescence measurements.
+    Data class for continuous wave photo luminescence measurement.
 
     Examples
     --------
-    Create dataframe of data.
+    Create a dataframe of data.
     >>> grating = np.arange(4000, 4010)
     >>> np.random.seed(0)
     >>> intensity = np.random.random(grating.size)
