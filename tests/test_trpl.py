@@ -1,21 +1,22 @@
 import io
 import os
 import typing as t
-from unittest import mock
 
 import numpy as np
 import pandas as pd
 import pytest
+import pytest_mock
 
+from tests import FixtureRequest
 from tlab_analysis import trpl
 
 WAVELENGTH_RESOLUTION = 640
 TIME_RESOLUTION = 480
 
 
-@pytest.fixture()
-def data() -> trpl.TRPLData:
-    random = np.random.RandomState(0)
+@pytest.fixture(params=[0, 1, 2])
+def data(request: FixtureRequest[int]) -> trpl.TRPLData:
+    random = np.random.RandomState(request.param)
     header = bytes.fromhex(
         "49 4d cd 01 80 02 e0 01 00 00 00 00 02 00 00 00"
         "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
@@ -31,14 +32,23 @@ def data() -> trpl.TRPLData:
         "Spectrograph:Wavelength=490.000[nm], Grating=2 : 150g/mm, SlitWidthIn=100[um], Mode=Spectrograph\n",
         "Date:1970/01/01,00:00:00\n",
     ]
-    time = np.linspace(0, 10, TIME_RESOLUTION, dtype=np.float32)
-    wavelength = np.linspace(435, 535, WAVELENGTH_RESOLUTION, dtype=np.float32)
+    time = np.linspace(
+        0,
+        [2, 5, 10][request.param],
+        TIME_RESOLUTION,
+        dtype=np.float32,
+    )
+    wavelength = np.linspace(
+        *([(200, 400), (300, 600), (200, 600)][request.param]),
+        WAVELENGTH_RESOLUTION,
+        dtype=np.float32,
+    )
     df = pd.DataFrame(
         dict(
             time=np.repeat(time, len(wavelength)),
             wavelength=np.tile(wavelength, len(time)),
             intensity=random.randint(
-                0, 64, WAVELENGTH_RESOLUTION * TIME_RESOLUTION, dtype=np.uint16
+                0, 100, WAVELENGTH_RESOLUTION * TIME_RESOLUTION, dtype=np.uint16
             ),
         )
     )
@@ -128,14 +138,16 @@ def describe_trpl_data() -> None:
     @pytest.mark.parametrize("wavelength_range", [None, (0.0, 1.0)])
     @pytest.mark.parametrize("time_offset", ["auto", 1.0])
     @pytest.mark.parametrize("intensity_offset", ["auto", 1.0])
-    @mock.patch("tlab_analysis.utils.find_scdc", return_value=(0.0, 0.0))
     def test_aggregate_along_wavelength_with_wavelength_range(
-        find_scdc_mock: mock.Mock,
         data: trpl.TRPLData,
         wavelength_range: tuple[float, float] | None,
         time_offset: t.Literal["auto"] | float,
         intensity_offset: t.Literal["auto"] | float,
+        mocker: pytest_mock.MockerFixture,
     ) -> None:
+        find_scdc_mock = mocker.patch(
+            "tlab_analysis.utils.find_scdc", return_value=(0.0, 0.0)
+        )
         actual = data.aggregate_along_wavelength(
             wavelength_range, time_offset, intensity_offset
         )
