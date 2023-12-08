@@ -41,17 +41,13 @@ def read_file(
 
     Returns
     -------
-    tlab_analysis.trpl.TRPLDataFrame
+    tlab_analysis.trpl.TRPLData
         A dataframe from the raw file.
 
     Raises
     ------
     ValueError
         If `filepath_or_buffer` is invalid.
-
-    Examples
-    --------
-    >>> data = read_file("data.img")  # doctest: +SKIP
     """
     if isinstance(filepath_or_buffer, (str, os.PathLike)):
         with open(filepath_or_buffer, "rb") as f:
@@ -60,7 +56,7 @@ def read_file(
         return _read_file(filepath_or_buffer)
     else:
         raise ValueError(
-            "The type of filepath_or_buffer must be os.PathLike or io.BufferedIOBase"
+            f"Invalid type for filepath_or_buffer: {type(filepath_or_buffer)}"
         )
 
 
@@ -89,11 +85,11 @@ def _read_file(file: io.BufferedIOBase) -> TRPLData:
 @dataclasses.dataclass(frozen=True)
 class TRPLData:
     """
-    Data class for time-resolved photo luminescence measurements.
+    Data class for time-resolved photo luminescence measurement.
 
     Examples
     --------
-    Create dataframe of data.
+    Create a dataframe of data.
     >>> time = np.linspace(0, 10, 3, dtype=np.float32)
     >>> wavelength = np.linspace(400, 500, 3, dtype=np.float32)
     >>> np.random.seed(0)
@@ -180,7 +176,7 @@ class TRPLData:
     """
 
     df: pd.DataFrame
-    """A dataframe of the measurement."""
+    """A dataframe of the measurement data."""
     header: bytes = DEFAULT_HEADER
     """Bytes of the header of a raw binary from u8167."""
     metadata: list[str] = dataclasses.field(
@@ -249,7 +245,7 @@ class TRPLData:
 
         Returns
         -------
-        numpy.ndarray[np.float32]
+        numpy.ndarray
             A 2D array of the streak image.
 
         Examples
