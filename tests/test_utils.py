@@ -1,5 +1,3 @@
-from collections import abc
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -14,7 +12,7 @@ from tlab_analysis import utils
     ids=["length_not_equal", "empty"],
 )
 def test_validate_xdata_and_ydata_invalid(
-    invalid_xdata_and_ydata: tuple[abc.Sequence[float], abc.Sequence[float]]
+    invalid_xdata_and_ydata: tuple[list[float], list[float]]
 ) -> None:
     xdata, ydata = invalid_xdata_and_ydata
     with pytest.raises(ValueError):
