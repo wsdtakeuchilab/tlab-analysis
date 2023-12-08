@@ -132,19 +132,17 @@ def double_exponential(t, a, tau1, b, tau2):
     return a * np.exp(-t / tau1) + b * np.exp(-t / tau2)
 
 
-time = tdf["time"]
-intensity = tdf["intensity"]
-fitting_range = utils.determine_fit_range_dc(time, intensity)
-index = time.between(*fitting_range)
-params, cov = utils.curve_fit(
+decay_range = utils.find_decay_range(tdf["intensity"])
+params, _ = utils.curve_fit(
     double_exponential,
-    time[index],
-    intensity[index],
+    tdf["time"][decay_range[0] : decay_range[1]],
+    tdf["intensity"][decay_range[0] : decay_range[1]],
     bounds=(0.0, np.inf),
 )
-tdf["fit"] = double_exponential(time[index], *params)
+tdf["fit"] = double_exponential(time[decay_range[0] : decay_range[1]], *params)
 fig = px.line(tdf, x="time", y=["intensity", "fit"])
 fig.show()
+print(params)
 ```
 
 ![fitting curve](./resources/images/trpl/v-figure-fit.svg)
