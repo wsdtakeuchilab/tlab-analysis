@@ -62,13 +62,15 @@ def raw_binary(data: trpl.TRPLData) -> bytes:
     return (
         data.header
         + "".join(data.metadata).encode(u8167.encoding)
-        + data.intensity.to_numpy()
+        + data.intensity.to_numpy(dtype=np.uint16)
         .tobytes("C")
         .ljust(u8167.sector_size * u8167.num_sector_intensity, b"\x00")
         + data.wavelength.unique()
+        .astype(np.float32)
         .tobytes("C")
         .ljust(u8167.sector_size * u8167.num_sector_wavelength, b"\x00")
         + data.time.unique()
+        .astype(np.float32)
         .tobytes("C")
         .ljust(u8167.sector_size * u8167.num_sector_time, b"\x00")
     )
@@ -96,13 +98,17 @@ def test_read_file_invalid_type() -> None:
 
 def describe_trpl_data() -> None:
     def test_time(data: trpl.TRPLData) -> None:
-        pd.testing.assert_series_equal(data.time, data.df["time"])
+        pd.testing.assert_series_equal(data.time, data.df["time"].astype(float))
 
     def test_wavelength(data: trpl.TRPLData) -> None:
-        pd.testing.assert_series_equal(data.wavelength, data.df["wavelength"])
+        pd.testing.assert_series_equal(
+            data.wavelength, data.df["wavelength"].astype(float)
+        )
 
     def test_instensity(data: trpl.TRPLData) -> None:
-        pd.testing.assert_series_equal(data.intensity, data.df["intensity"])
+        pd.testing.assert_series_equal(
+            data.intensity, data.df["intensity"].astype(float)
+        )
 
     def test_to_streak_image(data: trpl.TRPLData) -> None:
         img = data.to_streak_image()

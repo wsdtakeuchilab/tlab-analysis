@@ -3,7 +3,6 @@ from __future__ import annotations
 import dataclasses
 import io
 import os
-import typing as t
 
 import numpy as np
 import pandas as pd
@@ -112,17 +111,17 @@ class CWPLData:
 
     Access each column.
     >>> data.grating
-    0    4000
-    1    4001
-    2    4002
-    3    4003
-    4    4004
-    5    4005
-    6    4006
-    7    4007
-    8    4008
-    9    4009
-    Name: grating, dtype: int64
+    0    4000.0
+    1    4001.0
+    2    4002.0
+    3    4003.0
+    4    4004.0
+    5    4005.0
+    6    4006.0
+    7    4007.0
+    8    4008.0
+    9    4009.0
+    Name: grating, dtype: float64
     >>> data.intensity
     0    0.548814
     1    0.715189
@@ -186,21 +185,21 @@ class CWPLData:
             return NotImplemented  # pragma: no cover
 
     @property
-    def wavelength(self) -> pd.Series[t.Any]:
+    def wavelength(self) -> pd.Series[float]:
         """
         A series of wavelength in nanometer.
         """
         return self.grating / 10
 
     @property
-    def wavelength_caribrated(self) -> pd.Series[t.Any]:
+    def wavelength_caribrated(self) -> pd.Series[float]:
         """
         A series of caribrated wavelength in nanometer.
         """
         return 1.0473 * self.wavelength - 32.273
 
     @property
-    def grating(self) -> pd.Series[t.Any]:
+    def grating(self) -> pd.Series[float]:
         """
         A series of grating in 10 × nanometer.
         """
@@ -208,10 +207,10 @@ class CWPLData:
         assert (
             column_name in self.df.columns
         ), f"The column named `{column_name}` doesn't exist in CWPLData.df"
-        return self.df[column_name]
+        return self.df[column_name].astype(float)
 
     @property
-    def intensity(self) -> pd.Series[t.Any]:
+    def intensity(self) -> pd.Series[float]:
         """
         A series of intensity in arbitrary units.
         """
@@ -219,7 +218,7 @@ class CWPLData:
         assert (
             column_name in self.df.columns
         ), f"The column named `{column_name}` doesn't exist in CWPLData.df"
-        return self.df[column_name]
+        return self.df[column_name].astype(float)
 
     def to_raw_binary(self) -> bytes:
         """

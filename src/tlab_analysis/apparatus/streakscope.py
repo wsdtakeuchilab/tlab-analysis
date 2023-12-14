@@ -26,18 +26,18 @@ def correct(data: trpl.TRPLData) -> trpl.TRPLData:
     0    200.0
     1    300.0
     2    400.0
-    Name: wavelength, dtype: float32
+    Name: wavelength, dtype: float64
     >>> corrected = correct(data)
     >>> corrected.wavelength[:3]
     0     800.0
     1    1200.0
     2    1600.0
-    Name: wavelength, dtype: float32
+    Name: wavelength, dtype: float64
     >>> data.intensity[:3]
-    0    44
-    1    47
-    2    68
-    Name: intensity, dtype: uint16
+    0    44.0
+    1    47.0
+    2    68.0
+    Name: intensity, dtype: float64
     >>> corrected.intensity[:3]
     0     0.029833
     1     1.857857
