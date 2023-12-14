@@ -49,22 +49,19 @@ repos:
         args:
           - --format=parsable
           - --config-data=relaxed
-  - repo: https://github.com/pecigonzalo/pre-commit-shfmt
-    rev: v2.1.0
+  - repo: https://github.com/maxwinterstein/shfmt-py
+    rev: v3.7.0.1
     hooks:
-      - id: shell-fmt-docker
+      - id: shfmt
         name: Format shell scripts
         args:
+          - -w
           - -i=2
-  - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.9.0
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.6
     hooks:
       - id: shellcheck
         name: Lint shell scripts
 ci:
   autofix_commit_msg: 🎨 [pre-commit.ci] Auto format from pre-commit.com hooks
   autoupdate_commit_msg: ⬆ [pre-commit.ci] pre-commit autoupdate
-  skip:
-    # Docker hooks
-    - shell-fmt-docker
-    - shellcheck
