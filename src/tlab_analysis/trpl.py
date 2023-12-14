@@ -127,7 +127,7 @@ class TRPLData:
     6    10.0
     7    10.0
     8    10.0
-    Name: time, dtype: float32
+    Name: time, dtype: float64
     >>> data.wavelength
     0    400.0
     1    450.0
@@ -138,24 +138,24 @@ class TRPLData:
     6    400.0
     7    450.0
     8    500.0
-    Name: wavelength, dtype: float32
+    Name: wavelength, dtype: float64
     >>> data.intensity
-    0    44
-    1    47
-    2    68
-    3    22
-    4    64
-    5    33
-    6    67
-    7    78
-    8    34
-    Name: intensity, dtype: uint16
+    0    44.0
+    1    47.0
+    2    68.0
+    3    22.0
+    4    64.0
+    5    33.0
+    6    67.0
+    7    78.0
+    8    34.0
+    Name: intensity, dtype: float64
 
     Get the streak image.
     >>> data.to_streak_image()
     array([[44., 47., 68.],
            [22., 64., 33.],
-           [67., 78., 34.]], dtype=float32)
+           [67., 78., 34.]])
 
     Aggregate along each axis.
     >>> data.aggregate_along_time()
@@ -207,7 +207,7 @@ class TRPLData:
             return NotImplemented  # pragma: no cover
 
     @property
-    def time(self) -> pd.Series[t.Any]:
+    def time(self) -> pd.Series[float]:
         """
         A series of time in nanosecond.
         """
@@ -215,10 +215,10 @@ class TRPLData:
         assert (
             column_name in self.df.columns
         ), f"The column named `{column_name}` doesn't exist"
-        return self.df[column_name]
+        return self.df[column_name].astype(float)
 
     @property
-    def wavelength(self) -> pd.Series[t.Any]:
+    def wavelength(self) -> pd.Series[float]:
         """
         A series of wavelength in nanometer.
         """
@@ -226,10 +226,10 @@ class TRPLData:
         assert (
             column_name in self.df.columns
         ), f"The column named `{column_name}` doesn't exist"
-        return self.df[column_name]
+        return self.df[column_name].astype(float)
 
     @property
-    def intensity(self) -> pd.Series[t.Any]:
+    def intensity(self) -> pd.Series[float]:
         """
         A series of intensity in arbitrary units.
         """
@@ -237,9 +237,9 @@ class TRPLData:
         assert (
             column_name in self.df.columns
         ), f"The column named `{column_name}` doesn't exist"
-        return self.df[column_name]
+        return self.df[column_name].astype(float)
 
-    def to_streak_image(self) -> npt.NDArray[np.float32]:
+    def to_streak_image(self) -> npt.NDArray[np.float64]:
         """
         Returns a 2D array of the streak image.
 
@@ -266,11 +266,11 @@ class TRPLData:
         >>> data.to_streak_image()
         array([[44., 47., 68.],
                [22., 64., 33.],
-               [67., 78., 34.]], dtype=float32)
+               [67., 78., 34.]])
         """
         img = (
             self.df.sort_values(["time", "wavelength"])["intensity"]
-            .to_numpy(dtype=np.float32)
+            .to_numpy(dtype=np.float64)
             .reshape(len(self.time.unique()), len(self.wavelength.unique()))
         )
         return img
