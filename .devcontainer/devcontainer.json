@@ -1,13 +1,11 @@
 {
   "name": "Python 3",
-  "image": "mcr.microsoft.com/vscode/devcontainers/python:3.12",
+  "dockerComposeFile": "compose.yml",
+  "service": "main",
+  "workspaceFolder": "/workspaces/main",
   "features": {
-    "ghcr.io/devcontainers-contrib/features/apt-packages:1": {
-      "packages": "bash-completion"
-    },
     "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
-    "ghcr.io/devcontainers-contrib/features/hatch:2": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers-contrib/features/hatch:2": {}
   },
   "customizations": {
     "vscode": {
@@ -18,7 +16,6 @@
         "ms-azuretools.vscode-docker",
         "ms-python.black-formatter",
         "ms-python.flake8",
-        "ms-python.isort",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-toolsai.jupyter",
@@ -33,6 +30,6 @@
   "postCreateCommand": {
     "install pre-commit": "pre-commit install",
     "install pip-completion": "echo 'source <(pip completion --bash)' >> ~/.bashrc",
-    "create hatch env": "bash .devcontainer/create-hatch-env.sh"
+    "create hatch env": "hatch env create default"
   }
 }
