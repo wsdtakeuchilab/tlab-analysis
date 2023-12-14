@@ -4,6 +4,9 @@
   "service": "main",
   "workspaceFolder": "/workspaces/main",
   "features": {
+    "ghcr.io/devcontainers-contrib/features/apt-packages:1": {
+      "packages": "bash-completion"
+    },
     "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
     "ghcr.io/devcontainers-contrib/features/hatch:2": {}
   },
