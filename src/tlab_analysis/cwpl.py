@@ -85,13 +85,13 @@ class CWPLData:
     Examples
     --------
     Create a dataframe of data.
-    >>> grating = np.arange(4000, 4010)
+    >>> grating = np.arange(4000, 4010, dtype=np.int64)
     >>> np.random.seed(0)
     >>> intensity = np.random.random(grating.size)
     >>> df = pd.DataFrame(
     ...     dict(
-    ...             grating=grating,
-    ...             intensity=intensity,
+    ...         grating=grating,
+    ...         intensity=intensity,
     ...     )
     ... )
 
