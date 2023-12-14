@@ -89,7 +89,7 @@ def test_read_file_invalid_type() -> None:
 
 def describe_cwpl_data() -> None:
     def test_grating(data: cwpl.CWPLData) -> None:
-        pd.testing.assert_series_equal(data.grating, data.df["grating"])
+        pd.testing.assert_series_equal(data.grating, data.df["grating"].astype(float))
 
     def test_wavelength(data: cwpl.CWPLData) -> None:
         pd.testing.assert_series_equal(data.wavelength, data.df["grating"] / 10)
