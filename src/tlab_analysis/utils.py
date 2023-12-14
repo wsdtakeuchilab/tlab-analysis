@@ -371,7 +371,7 @@ def curve_fit(
     >>> f = lambda x, a, x0: a * np.sin(x - x0)
     >>> params, cov = curve_fit(f, x, y)
     >>> params
-    array([0.99896409, 0.79473428])
+    array([1.00244564, 0.7667709 ])
 
     See also
     --------

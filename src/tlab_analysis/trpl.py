@@ -93,7 +93,7 @@ class TRPLData:
     >>> time = np.linspace(0, 10, 3, dtype=np.float32)
     >>> wavelength = np.linspace(400, 500, 3, dtype=np.float32)
     >>> np.random.seed(0)
-    >>> intensity = np.random.randint(0, 100, len(time) * len(wavelength))
+    >>> intensity = np.random.randint(0, 100, len(time) * len(wavelength), dtype=np.uint16)
     >>> df = pd.DataFrame(
     ...     dict(
     ...         time=np.repeat(time, len(wavelength)),
@@ -108,13 +108,13 @@ class TRPLData:
        time  wavelength  intensity
     0   0.0       400.0         44
     1   0.0       450.0         47
-    2   0.0       500.0         64
-    3   5.0       400.0         67
-    4   5.0       450.0         67
-    5   5.0       500.0          9
-    6  10.0       400.0         83
-    7  10.0       450.0         21
-    8  10.0       500.0         36
+    2   0.0       500.0         68
+    3   5.0       400.0         22
+    4   5.0       450.0         64
+    5   5.0       500.0         33
+    6  10.0       400.0         67
+    7  10.0       450.0         78
+    8  10.0       500.0         34
 
     Access each column.
     >>> data.time
@@ -142,32 +142,32 @@ class TRPLData:
     >>> data.intensity
     0    44
     1    47
-    2    64
-    3    67
-    4    67
-    5     9
-    6    83
-    7    21
-    8    36
-    Name: intensity, dtype: int64
+    2    68
+    3    22
+    4    64
+    5    33
+    6    67
+    7    78
+    8    34
+    Name: intensity, dtype: uint16
 
     Get the streak image.
     >>> data.to_streak_image()
-    array([[44., 47., 64.],
-           [67., 67.,  9.],
-           [83., 21., 36.]], dtype=float32)
+    array([[44., 47., 68.],
+           [22., 64., 33.],
+           [67., 78., 34.]], dtype=float32)
 
     Aggregate along each axis.
     >>> data.aggregate_along_time()
        wavelength  intensity
-    0       400.0        194
-    1       450.0        135
-    2       500.0        109
+    0       400.0        133
+    1       450.0        189
+    2       500.0        135
     >>> data.aggregate_along_wavelength(time_offset=0, intensity_offset=0)
        time  intensity
-    0   0.0        155
-    1   5.0        143
-    2  10.0        140
+    0   0.0        159
+    1   5.0        119
+    2  10.0        179
 
     Notes
     -----
@@ -255,18 +255,18 @@ class TRPLData:
            time  wavelength  intensity
         0   0.0       200.0         44
         1   0.0       300.0         47
-        2   0.0       400.0         64
-        3   5.0       200.0         67
-        4   5.0       300.0         67
-        5   5.0       400.0          9
-        6  10.0       200.0         83
-        7  10.0       300.0         21
-        8  10.0       400.0         36
+        2   0.0       400.0         68
+        3   5.0       200.0         22
+        4   5.0       300.0         64
+        5   5.0       400.0         33
+        6  10.0       200.0         67
+        7  10.0       300.0         78
+        8  10.0       400.0         34
 
         >>> data.to_streak_image()
-        array([[44., 47., 64.],
-               [67., 67.,  9.],
-               [83., 21., 36.]], dtype=float32)
+        array([[44., 47., 68.],
+               [22., 64., 33.],
+               [67., 78., 34.]], dtype=float32)
         """
         img = (
             self.df.sort_values(["time", "wavelength"])["intensity"]
@@ -329,19 +329,19 @@ class TRPLData:
            time  wavelength  intensity
         0   0.0       200.0         44
         1   0.0       300.0         47
-        2   0.0       400.0         64
-        3   5.0       200.0         67
-        4   5.0       300.0         67
-        5   5.0       400.0          9
-        6  10.0       200.0         83
-        7  10.0       300.0         21
-        8  10.0       400.0         36
+        2   0.0       400.0         68
+        3   5.0       200.0         22
+        4   5.0       300.0         64
+        5   5.0       400.0         33
+        6  10.0       200.0         67
+        7  10.0       300.0         78
+        8  10.0       400.0         34
 
         >>> data.aggregate_along_time()
            wavelength  intensity
-        0       200.0        194
-        1       300.0        135
-        2       400.0        109
+        0       200.0        133
+        1       300.0        189
+        2       400.0        135
         """
         if time_range is None:
             time_range = self.time.min(), self.time.max()
@@ -389,19 +389,19 @@ class TRPLData:
            time  wavelength  intensity
         0   0.0       200.0         44
         1   0.0       300.0         47
-        2   0.0       400.0         64
-        3   5.0       200.0         67
-        4   5.0       300.0         67
-        5   5.0       400.0          9
-        6  10.0       200.0         83
-        7  10.0       300.0         21
-        8  10.0       400.0         36
+        2   0.0       400.0         68
+        3   5.0       200.0         22
+        4   5.0       300.0         64
+        5   5.0       400.0         33
+        6  10.0       200.0         67
+        7  10.0       300.0         78
+        8  10.0       400.0         34
 
         >>> data.aggregate_along_wavelength(time_offset=0, intensity_offset=0)
            time  intensity
-        0   0.0        155
-        1   5.0        143
-        2  10.0        140
+        0   0.0        159
+        1   5.0        119
+        2  10.0        179
         """
         if wavelength_range is None:
             wavelength_range = self.wavelength.min(), self.wavelength.max()

@@ -1,0 +1,9 @@
+---
+services:
+  main:
+    image: mcr.microsoft.com/vscode/devcontainers/python:3.12
+    volumes:
+      - type: bind
+        source: ..
+        target: /workspaces/main
+    command: sleep infinity

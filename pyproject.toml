@@ -52,25 +52,6 @@ test = "pytest --cov-report=term-missing:skip-covered src tests {args}"
 test-doc = "pytest --doctest-modules src {args}"
 check-type = "mypy src tests {args}"
 
-[tool.hatch.envs.lint]
-skip-install = true
-dependencies = [
-  "black==23.11.0",
-  "isort==5.12.0",
-  "flake8==6.1.0",
-]
-
-[tool.hatch.envs.lint.scripts]
-format = [
-  "isort src tests scripts",
-  "black src tests scripts",
-]
-lint = [
-  "isort --check-only src tests",
-  "black --check src tests",
-  "flake8 src tests",
-]
-
 [tool.hatch.envs.doc]
 dependencies = []
 

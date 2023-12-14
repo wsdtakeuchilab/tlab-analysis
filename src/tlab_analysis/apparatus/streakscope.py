@@ -36,12 +36,12 @@ def correct(data: trpl.TRPLData) -> trpl.TRPLData:
     >>> data.intensity[:3]
     0    44
     1    47
-    2    64
-    Name: intensity, dtype: int64
+    2    68
+    Name: intensity, dtype: uint16
     >>> corrected.intensity[:3]
     0     0.029833
     1     1.857857
-    2    64.000000
+    2    68.000000
     Name: intensity, dtype: float64
 
     The returned object is different from the original.
