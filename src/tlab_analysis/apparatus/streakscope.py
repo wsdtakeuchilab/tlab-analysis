@@ -7,7 +7,7 @@ from tlab_analysis import trpl
 
 def correct(data: trpl.TRPLData) -> trpl.TRPLData:
     """
-    Corrects wavlength and intensity of the data.
+    Corrects wavelength and intensity of the data.
 
     Parameters
     ----------
