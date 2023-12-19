@@ -11,10 +11,14 @@ license = "MIT"
 authors = [
   { name = "Shuhei Nitta", email = "huisintheta@gmail.com" }
 ]
+maintainers = [
+  { name = "Shuhei Nitta", email = "huisintheta@gmail.com" }
+]
 # keywords = []
 # classifiers = []
 dependencies = [
-  "pandas~=2.1.3",
+  "pandas~=2.1.4",
+  "pandas-stubs~=2.1.4.231218",
   "scipy~=1.11.3",
 ]
 dynamic = ["version"]
@@ -22,17 +26,15 @@ dynamic = ["version"]
 [project.urls]
 Documentation = "https://github.com/wasedatakeuchilab/tlab-analysis"
 Homepage = "https://github.com/wasedatakeuchilab/tlab-analysis"
+Repository = "https://github.com/wasedatakeuchilab/tlab-analysis"
 
 [project.optional-dependencies]
 test = [
+  "mypy==1.7.1",
   "pytest==7.4.3",
   "pytest-cov==4.1.0",
   "pytest-describe==2.1.0",
   "pytest-mock==3.12.0",
-]
-mypy = [
-  "mypy==1.7.1",
-  "pandas-stubs==2.1.4.231218",
 ]
 jupyter = [
   "ipywidgets==8.1.1",
@@ -45,7 +47,7 @@ jupyter = [
 path = "src/tlab_analysis/__init__.py"
 
 [tool.hatch.envs.default]
-features = ["test", "mypy", "jupyter"]
+features = ["test", "jupyter"]
 
 [tool.hatch.envs.default.scripts]
 test = "pytest --cov-report=term-missing:skip-covered src tests {args}"
@@ -63,13 +65,9 @@ sqlite_cache = true
 
 [[tool.mypy.overrides]]
 module = [
-  "numpy.*",
   "scipy.*",
 ]
 ignore_missing_imports = true
-
-[tool.isort]
-profile = "black"
 
 [tool.pytest.ini_options]
 addopts = "--cov=tlab_analysis"
