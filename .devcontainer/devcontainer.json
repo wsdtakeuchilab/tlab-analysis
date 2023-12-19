@@ -33,6 +33,6 @@
   "postCreateCommand": {
     "install pre-commit": "pre-commit install",
     "install pip-completion": "echo 'source <(pip completion --bash)' >> ~/.bashrc",
-    "create hatch env": "hatch env create default"
+    "create hatch env": "bash .devcontainer/create-hatch-env.sh"
   }
 }
