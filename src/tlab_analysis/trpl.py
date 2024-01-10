@@ -21,9 +21,9 @@ DEFAULT_METADATA = [
     "HiPic,1.0,100,1.0,0,0,4,8,0,0,0,01-01-1970,00:00:00,"
     "0,0,0,0,0, , , , ,0,0,0,0,0, , ,0,, , , ,0,0,, ,0,0,0,0,0,0,0,0,0,0,2,"
     "1,nm,*0614925,2,1,ns,*0619021,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0.0,0,0,"
-    "StopCondition:PhotonCounting, Frame=10000, Time=300.0[sec], CountingRate=0.10[%]\n",
+    "StopCondition:PhotonCounting, Frame=10000, Time=300.0[sec], CountingRate=0.10[%]\n",  # noqa: E501
     "Streak:Time=10 ns, Mode=Operate, Shutter=0, MCPGain=10, MCPSwitch=1,\n",
-    "Spectrograph:Wavelength=490.000[nm], Grating=2 : 150g/mm, SlitWidthIn=100[um], Mode=Spectrograph\n",
+    "Spectrograph:Wavelength=490.000[nm], Grating=2 : 150g/mm, SlitWidthIn=100[um], Mode=Spectrograph\n",  # noqa: E501
     "Date:1970/01/01,00:00:00\n",
 ]
 
@@ -93,7 +93,8 @@ class TRPLData:
     >>> time = np.linspace(0, 10, 3, dtype=np.float32)
     >>> wavelength = np.linspace(400, 500, 3, dtype=np.float32)
     >>> np.random.seed(0)
-    >>> intensity = np.random.randint(0, 100, len(time) * len(wavelength), dtype=np.uint16)
+    >>> intensity = np.random.randint(
+    ...     0, 100, len(time) * len(wavelength), dtype=np.uint16)
     >>> df = pd.DataFrame(
     ...     dict(
     ...         time=np.repeat(time, len(wavelength)),
