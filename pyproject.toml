@@ -71,3 +71,11 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 addopts = "--cov=tlab_analysis"
+
+[tool.ruff]
+select = [
+  "E",
+  "F",
+  "W",
+  "I",
+]
