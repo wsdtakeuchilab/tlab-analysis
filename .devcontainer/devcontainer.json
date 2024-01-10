@@ -13,12 +13,11 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "charliermarsh.ruff",
         "esbenp.prettier-vscode",
         "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
         "ms-azuretools.vscode-docker",
-        "ms-python.black-formatter",
-        "ms-python.flake8",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-toolsai.jupyter",
