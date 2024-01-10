@@ -18,7 +18,7 @@ def data(request: FixtureRequest[int]) -> cwpl.CWPLData:
         "0\r\n",
         "0\r\n",
         "0\r\n",
-        '"                                                                                                                                                                                                                                                                "\r\n',
+        '"                                                                                                                                                                                                                                                                "\r\n',  # noqa: E501
         "501\r\n",
         '"no data"\r\n',
         '"no data"\r\n',
