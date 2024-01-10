@@ -50,7 +50,8 @@ def smooth(x: abc.Collection[float], window: int | float = 3) -> list[float]:
         A sequence of numbers to be smoothed.
     window : int | float
         The window size for mean filtering.
-        if `window` < 1, the value will be interpreted as the ratio to the length of `x`.
+        if `window` < 1, the value will be interpreted
+        as the ratio to the length of `x`.
 
     Returns
     -------
@@ -119,12 +120,14 @@ def find_peaks(
         The number of points for spline interpolation.
     width : int
         Required width of peaks in samples.
-        See https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html for detail.
+        See https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html
+        for detail.
     width_height_ratio : float
         The ratio of peak width height to peak height.
     kwargs : Any
         The keyword arguments for `scipy.signal.find_peaks`.
-        See https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html for detail.
+        See https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html
+        for detail.
 
     Returns
     -------
@@ -311,7 +314,8 @@ def determine_fit_range_dc(
     import warnings
 
     warnings.warn(
-        f"{determine_fit_range_dc.__name__} is deprecated and will be removed after version 0.6.0. "
+        f"{determine_fit_range_dc.__name__} is deprecated "
+        "and will be removed after version 0.6.0. "
         f"Use {find_decay_range.__name__} instead.",
         category=FutureWarning,
         stacklevel=2,
@@ -353,13 +357,15 @@ def curve_fit(
         The number of points for spline interpolation.
     kwargs : Any
         The keyword arguments for `scipy.optimize.curve_fit`.
-        See https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html for detail.
+        See https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+        for detail.
 
     Returns
     -------
     Any
         The same as what `scipy.optimize.curve_fit` returns.
-        See https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html for detail.
+        See https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+        for detail.
 
     Examples
     --------
