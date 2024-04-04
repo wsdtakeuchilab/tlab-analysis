@@ -73,7 +73,7 @@ ignore_missing_imports = true
 addopts = "--cov=tlab_analysis"
 
 [tool.ruff]
-select = [
+lint.select = [
   "E",
   "F",
   "W",
