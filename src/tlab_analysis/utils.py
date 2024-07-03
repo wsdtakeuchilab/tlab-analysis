@@ -162,11 +162,11 @@ def find_peaks(
         _idx = bisect.bisect_left(_roots, x[peak])
         results.append(
             Peak(
-                x=x[peak],
-                y=y[peak],
-                x0=_roots[_idx - 1] if _idx > 0 else x[0],
-                x1=_roots[_idx] if _idx < len(_roots) else x[-1],
-                y0=y[peak] * width_height_ratio,
+                x=float(x[peak]),
+                y=float(y[peak]),
+                x0=float(_roots[_idx - 1] if _idx > 0 else x[0]),
+                x1=float(_roots[_idx] if _idx < len(_roots) else x[-1]),
+                y0=float(y[peak] * width_height_ratio),
             )
         )
     return results
