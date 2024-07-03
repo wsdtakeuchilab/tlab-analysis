@@ -19,7 +19,7 @@ maintainers = [
 dependencies = [
   "pandas~=2.2.1",
   "pandas-stubs~=2.2.2.240603",
-  "scipy~=1.13.0",
+  "scipy~=1.14.0",
 ]
 dynamic = ["version"]
 
