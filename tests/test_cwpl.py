@@ -4,9 +4,9 @@ import os
 import numpy as np
 import pandas as pd
 import pytest
-from tlab_analysis import cwpl
 
 from tests import FixtureRequest
+from tlab_analysis import cwpl
 
 
 @pytest.fixture(params=[0, 1, 2])

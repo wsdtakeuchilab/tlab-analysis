@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from scipy import optimize
+
 from tlab_analysis import utils
 
 
