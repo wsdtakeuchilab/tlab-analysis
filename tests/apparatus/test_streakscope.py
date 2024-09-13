@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 import pytest
-from tlab_analysis import trpl
-from tlab_analysis.apparatus import streakscope
 
 from tests import FixtureRequest
+from tlab_analysis import trpl
+from tlab_analysis.apparatus import streakscope
 
 WAVELENGTH_RESOLUTION = 640
 TIME_RESOLUTION = 480

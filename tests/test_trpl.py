@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 import pytest
 import pytest_mock
-from tlab_analysis import trpl
 
 from tests import FixtureRequest
+from tlab_analysis import trpl
 
 WAVELENGTH_RESOLUTION = 640
 TIME_RESOLUTION = 480
