@@ -3,6 +3,8 @@
   "dockerComposeFile": "compose.yml",
   "service": "main",
   "workspaceFolder": "/workspaces/main",
+  "overrideCommand": true,
+  "shutdownAction": "stopCompose",
   "features": {
     "ghcr.io/devcontainers-contrib/features/apt-packages:1": {
       "packages": "bash-completion"
@@ -21,7 +23,7 @@
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-toolsai.jupyter",
-        "ninoseki.vscode-pylens",
+        "ninoseki.vscode-mogami",
         "redhat.vscode-yaml",
         "tamasfe.even-better-toml",
         "timonwong.shellcheck",

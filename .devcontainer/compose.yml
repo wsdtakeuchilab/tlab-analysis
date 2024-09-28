@@ -6,4 +6,3 @@ services:
       - type: bind
         source: ..
         target: /workspaces/main
-    command: sleep infinity
