@@ -4,7 +4,7 @@
 <a href="https://github.com/wasedatakeuchilab/tlab-analysis/actions?query=workflow%3ATest" target="_blank">
   <img src="https://github.com/wasedatakeuchilab/tlab-analysis/workflows/Test/badge.svg" alt="Test">
 </a>
-<a href="https://codecov.io/gh/wasedatakeuchilab/tlab-analysis" > 
+<a href="https://codecov.io/gh/wasedatakeuchilab/tlab-analysis" >
   <img src="https://codecov.io/gh/wasedatakeuchilab/tlab-analysis/graph/badge.svg?token=KscUuh9Ky5" alt="Coverage"/> 
 </a>
 </p>
