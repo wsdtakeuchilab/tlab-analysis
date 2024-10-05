@@ -2,10 +2,10 @@
 
 <p align="center">
 <a href="https://github.com/wasedatakeuchilab/tlab-analysis/actions?query=workflow%3ATest" target="_blank">
-    <img src="https://github.com/wasedatakeuchilab/tlab-analysis/workflows/Test/badge.svg" alt="Test">
+  <img src="https://github.com/wasedatakeuchilab/tlab-analysis/workflows/Test/badge.svg" alt="Test">
 </a>
-<a href="https://codecov.io/gh/wasedatakeuchilab/tlab-analysis" target="_blank">
-    <img src="https://img.shields.io/codecov/c/github/wasedatakeuchilab/tlab-analysis?color=%2334D058" alt="Coverage">
+<a href="https://codecov.io/gh/wasedatakeuchilab/tlab-analysis" > 
+  <img src="https://codecov.io/gh/wasedatakeuchilab/tlab-analysis/graph/badge.svg?token=KscUuh9Ky5" alt="Coverage"/> 
 </a>
 </p>
 
@@ -23,7 +23,7 @@
 ## Installation
 
 ```console
-pip install git+https://github.com/wasedatakeuchilab/tlab-analysis
+$ pip install git+https://github.com/wasedatakeuchilab/tlab-analysis
 ```
 
 ## Getting started
